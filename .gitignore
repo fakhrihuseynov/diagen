@@ -1,5 +1,5 @@
 # Assets (keep locally but not in repo)
-assets/
+# assets/
 examples/
 docs/
 # Node.js

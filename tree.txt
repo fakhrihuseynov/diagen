@@ -1333,6 +1333,7 @@
 │       │   ├── Multimedia_48_Light.svg
 │       │   ├── Office-building_48_Light.svg
 │       │   ├── Programming-Language_48_Light.svg
+|       |   |── Postgresql.svg
 │       │   ├── Question_48_Light.svg
 │       │   ├── Recover_48_Light.svg
 │       │   ├── SAML-token_48_Light.svg

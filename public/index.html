@@ -102,8 +102,9 @@
                 <p>Upload a markdown file describing your architecture</p>
             </div>
             <div class="generator-container">
-                <div class="generator-sidebar">
-                    <div class="card">
+                <!-- Top Row: Upload | Technology Focus | Generation Status -->
+                <div class="generator-controls-row">
+                    <div class="card card-upload">
                         <h3>Upload Markdown</h3>
                         <div class="upload-zone" id="md-upload-zone">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -115,7 +116,40 @@
                         </div>
                         <button class="btn btn-secondary" id="browse-md-btn">Browse Files</button>
                     </div>
-                    <div class="card">
+                    
+                    <div class="card card-technology">
+                        <h3>Technology Focus</h3>
+                        <p class="help-text">Select technologies (optional)</p>
+                        <div class="provider-selector provider-selector-compact">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="provider" value="AWS" />
+                                <span>AWS</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="provider" value="Azure" />
+                                <span>Azure</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="provider" value="GCP" />
+                                <span>GCP</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="provider" value="Kubernetes" />
+                                <span>Kubernetes</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="provider" value="Monitoring" />
+                                <span>Monitoring</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="provider" value="General" />
+                                <span>General</span>
+                            </label>
+                        </div>
+                        <p class="help-text-small">💡 Auto-detect if unchecked</p>
+                    </div>
+                    
+                    <div class="card card-status">
                         <h3>Generation Status</h3>
                         <div id="generation-status" class="status-box">
                             <p class="status-message">Ready to generate</p>
@@ -134,7 +168,9 @@
                         </button>
                     </div>
                 </div>
-                <div class="generator-main">
+                
+                <!-- Bottom Row: Markdown Preview (Full Width) -->
+                <div class="generator-preview-row">
                     <div class="card markdown-preview-card">
                         <h3>Markdown Preview</h3>
                         <div id="markdown-preview" class="markdown-preview">

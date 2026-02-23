@@ -135,9 +135,18 @@ export class AIGenerator {
             const modelSelect = document.getElementById('model-select');
             const model = modelSelect ? modelSelect.value : 'qwen2.5-coder:7b';
 
+            // Collect explicitly selected providers
+            const providerCheckboxes = document.querySelectorAll('input[name="provider"]:checked');
+            const explicitProviders = Array.from(providerCheckboxes).map(cb => cb.value);
+
             // Simulate progress updates
             this.showProgress(20);
-            this.updateStatus('Analyzing markdown structure...', 'processing');
+            
+            if (explicitProviders.length > 0) {
+                this.updateStatus(`Focusing on ${explicitProviders.join(', ')} technologies...`, 'processing');
+            } else {
+                this.updateStatus('Analyzing markdown structure (auto-detecting providers)...', 'processing');
+            }
 
             setTimeout(() => {
                 this.showProgress(40);
@@ -151,7 +160,8 @@ export class AIGenerator {
                 },
                 body: JSON.stringify({
                     markdown: this.currentMarkdown,
-                    model: model
+                    model: model,
+                    explicitProviders: explicitProviders
                 })
             });
 
