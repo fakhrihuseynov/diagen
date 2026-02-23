@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIAGEN - AI Architecture Diagram Generator</title>
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    <!-- Header Navigation -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <h1>diagen</h1>
+                <span class="tagline">AI Architecture Generator</span>
+            </div>
+            <nav class="nav-menu">
+                <button class="nav-btn active" data-page="home">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                    Home
+                </button>
+                <button class="nav-btn" data-page="generator">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                        <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                    </svg>
+                    AI Generator
+                </button>
+                <button class="nav-btn" data-page="export">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    Export
+                </button>
+                <button class="nav-btn" data-page="settings">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M13.5 2L13.9961 1.93798C13.9649 1.68777 13.7522 1.5 13.5 1.5V2ZM10.5 2V1.5C10.2478 1.5 10.0351 1.68777 10.0039 1.93798L10.5 2ZM13.7747 4.19754L13.2786 4.25955C13.3047 4.46849 13.4589 4.63867 13.6642 4.68519L13.7747 4.19754ZM16.2617 5.22838L15.995 5.6513C16.1731 5.76362 16.4024 5.75233 16.5687 5.62306L16.2617 5.22838ZM18.0104 3.86826L18.364 3.51471C18.1857 3.3364 17.9025 3.31877 17.7034 3.47359L18.0104 3.86826ZM20.1317 5.98958L20.5264 6.29655C20.6812 6.09751 20.6636 5.81434 20.4853 5.63603L20.1317 5.98958ZM18.7716 7.73831L18.3769 7.43134C18.2477 7.59754 18.2364 7.82693 18.3487 8.00503L18.7716 7.73831ZM19.8025 10.2253L19.3148 10.3358C19.3613 10.5411 19.5315 10.6953 19.7404 10.7214L19.8025 10.2253ZM22 10.5H22.5C22.5 10.2478 22.3122 10.0351 22.062 10.0039L22 10.5ZM22 13.5L22.062 13.9961C22.3122 13.9649 22.5 13.7522 22.5 13.5H22ZM19.8025 13.7747L19.7404 13.2786C19.5315 13.3047 19.3613 13.4589 19.3148 13.6642L19.8025 13.7747ZM18.7716 16.2617L18.3487 15.995C18.2364 16.1731 18.2477 16.4025 18.3769 16.5687L18.7716 16.2617ZM20.1317 18.0104L20.4853 18.364C20.6636 18.1857 20.6812 17.9025 20.5264 17.7034L20.1317 18.0104ZM18.0104 20.1317L17.7034 20.5264C17.9025 20.6812 18.1857 20.6636 18.364 20.4853L18.0104 20.1317ZM16.2617 18.7716L16.5687 18.3769C16.4024 18.2477 16.1731 18.2364 15.995 18.3487L16.2617 18.7716ZM13.7747 19.8025L13.6642 19.3148C13.4589 19.3613 13.3047 19.5315 13.2786 19.7404L13.7747 19.8025ZM13.5 22V22.5C13.7522 22.5 13.9649 22.3122 13.9961 22.062L13.5 22ZM10.5 22L10.0039 22.062C10.0351 22.3122 10.2478 22.5 10.5 22.5V22ZM10.2253 19.8025L10.7214 19.7404C10.6953 19.5315 10.5411 19.3613 10.3358 19.3148L10.2253 19.8025Z"></path>
+                        <circle cx="12" cy="12" r="4"></circle>
+                    </svg>
+                    Settings
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="main-content">
+        <!-- Home Page -->
+        <section id="home-page" class="page active">
+            <div class="page-header">
+                <h2>Welcome to Diagen</h2>
+                <p>Load an existing diagram or create a new one with AI</p>
+            </div>
+            <div class="content-grid">
+                <div class="card">
+                    <h3>Load Diagram</h3>
+                    <p>Upload a previously saved JSON diagram file</p>
+                    <div class="upload-zone" id="json-upload-zone">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"></path>
+                        </svg>
+                        <p>Drop JSON file here or click to browse</p>
+                        <input type="file" id="json-file-input" accept=".json" hidden>
+                    </div>
+                    <button class="btn btn-secondary" id="browse-json-btn">Browse Files</button>
+                </div>
+                <div class="card">
+                    <h3>Recent Examples</h3>
+                    <p>Explore sample architecture diagrams</p>
+                    <div class="examples-list">
+                        <div class="example-item" data-example="aws">
+                            <span class="example-icon">☁️</span>
+                            <span>AWS Example Blueprint</span>
+                        </div>
+                        <div class="example-item" data-example="azure">
+                            <span class="example-icon">☁️</span>
+                            <span>Azure Example Blueprint</span>
+                        </div>
+                        <div class="example-item" data-example="gcp">
+                            <span class="example-icon">☁️</span>
+                            <span>GCP Example Blueprint</span>
+                        </div>
+                        <div class="example-item" data-example="kubernetes">
+                            <span class="example-icon">⎈</span>
+                            <span>Kubernetes Example</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Generator Page -->
+        <section id="generator-page" class="page">
+            <div class="page-header">
+                <h2>AI Diagram Generator</h2>
+                <p>Upload a markdown file describing your architecture</p>
+            </div>
+            <div class="generator-container">
+                <div class="generator-sidebar">
+                    <div class="card">
+                        <h3>Upload Markdown</h3>
+                        <div class="upload-zone" id="md-upload-zone">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                            </svg>
+                            <p>Drop .md file here</p>
+                            <input type="file" id="md-file-input" accept=".md,.txt" hidden>
+                        </div>
+                        <button class="btn btn-secondary" id="browse-md-btn">Browse Files</button>
+                    </div>
+                    <div class="card">
+                        <h3>Generation Status</h3>
+                        <div id="generation-status" class="status-box">
+                            <p class="status-message">Ready to generate</p>
+                        </div>
+                        
+                        <!-- Progress Bar -->
+                        <div id="generation-progress" class="progress-bar-container" style="display: none;">
+                            <div class="progress-bar">
+                                <div id="progress-fill" class="progress-fill"></div>
+                            </div>
+                            <div id="progress-text" class="progress-text">0%</div>
+                        </div>
+                        
+                        <button class="btn btn-primary" id="generate-btn" disabled>
+                            Generate Diagram
+                        </button>
+                    </div>
+                </div>
+                <div class="generator-main">
+                    <div class="card markdown-preview-card">
+                        <h3>Markdown Preview</h3>
+                        <div id="markdown-preview" class="markdown-preview">
+                            <p class="placeholder-text">Upload a markdown file to see preview</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Export Page with Canvas -->
+        <section id="export-page" class="page">
+            <div class="page-header">
+                <h2>Canvas Editor</h2>
+                <div class="editor-controls">
+                    <button class="btn btn-secondary" id="clear-canvas-btn">Clear Canvas</button>
+                    <button class="btn btn-secondary" id="save-json-btn">Save as JSON</button>
+                    <button class="btn btn-primary" id="export-png-btn">Export as PNG</button>
+                </div>
+            </div>
+            <div class="canvas-container">
+                <canvas id="diagram-canvas" width="1600" height="1000"></canvas>
+            </div>
+            <div class="canvas-info">
+                <p>Click and drag elements to reposition • Use mouse wheel to zoom • Right-click elements for options</p>
+            </div>
+        </section>
+
+        <!-- Settings Page -->
+        <section id="settings-page" class="page">
+            <div class="page-header">
+                <h2>Settings</h2>
+                <p>Configure AI models and preferences</p>
+            </div>
+            <div class="settings-grid">
+                <div class="card">
+                    <h3>AI Model Selection</h3>
+                    <div class="form-group">
+                        <label for="model-select">Active Model</label>
+                        <select id="model-select" class="form-control">
+                            <option value="qwen2.5-coder:7b" selected>qwen2.5-coder:7b (Default)</option>
+                            <option value="llama3.1:8b">llama3.1:8b</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Available Models</label>
+                        <div id="available-models" class="model-list">
+                            <p class="loading-text">Checking Ollama connection...</p>
+                        </div>
+                    </div>
+                    <button class="btn btn-secondary" id="refresh-models-btn">Refresh Models</button>
+                </div>
+                <div class="card">
+                    <h3>Ollama Connection</h3>
+                    <div class="form-group">
+                        <label for="ollama-url">Ollama Server URL</label>
+                        <input type="text" id="ollama-url" class="form-control" value="http://localhost:11434" readonly>
+                    </div>
+                    <div class="connection-status" id="connection-status">
+                        <span class="status-dot"></span>
+                        <span class="status-text">Checking connection...</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Diagram Preferences</h3>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="auto-layout" checked>
+                            Enable automatic layout
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="orthogonal-edges" checked>
+                            Use orthogonal edges (right angles)
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="grid-size">Grid Snap Size (px)</label>
+                        <input type="number" id="grid-size" class="form-control" value="20" min="10" max="100" step="10">
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>About</h3>
+                    <p><strong>Diagen</strong> v1.0.0</p>
+                    <p>AI-Powered Cloud Architecture Diagram Generator</p>
+                    <p>Uses Ollama for local AI inference</p>
+                    <div class="about-links">
+                        <a href="https://github.com/fakhrihuseynov/diagen" target="_blank">GitHub</a>
+                        <span>•</span>
+                        <a href="https://ollama.com" target="_blank">Ollama</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="spinner"></div>
+        <p>Processing...</p>
+    </div>
+
+    <!-- Scripts -->
+    <script src="scripts/app.js" type="module"></script>
+</body>
+</html>
