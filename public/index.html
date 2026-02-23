@@ -39,9 +39,9 @@
                     Export
                 </button>
                 <button class="nav-btn" data-page="settings">
-                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="3"></circle>
-                        <path d="M12 1v6m0 6v6m9-9h-6m-6 0H3m15.364 6.364l-4.243-4.243m-6.364 0L3.636 18.364M18.364 5.636l-4.243 4.243m-6.364 0L3.636 5.636"></path>
+                        <path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42m12.72-12.72l1.42-1.42"></path>
                     </svg>
                     Settings
                 </button>
@@ -120,6 +120,15 @@
                         <div id="generation-status" class="status-box">
                             <p class="status-message">Ready to generate</p>
                         </div>
+                        
+                        <!-- Progress Bar -->
+                        <div id="generation-progress" class="progress-bar-container" style="display: none;">
+                            <div class="progress-bar">
+                                <div id="progress-fill" class="progress-fill"></div>
+                            </div>
+                            <div id="progress-text" class="progress-text">0%</div>
+                        </div>
+                        
                         <button class="btn btn-primary" id="generate-btn" disabled>
                             Generate Diagram
                         </button>

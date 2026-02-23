@@ -127,13 +127,22 @@ export class AIGenerator {
             return;
         }
 
-        this.updateStatus('Generating diagram with AI...', 'processing');
-        window.showLoading(true);
+        this.updateStatus('Initializing AI generation...', 'processing');
+        this.showProgress(0);
 
         try {
             // Get selected model from settings
             const modelSelect = document.getElementById('model-select');
             const model = modelSelect ? modelSelect.value : 'qwen2.5-coder:7b';
+
+            // Simulate progress updates
+            this.showProgress(20);
+            this.updateStatus('Analyzing markdown structure...', 'processing');
+
+            setTimeout(() => {
+                this.showProgress(40);
+                this.updateStatus('Mapping components to icons...', 'processing');
+            }, 500);
 
             const response = await fetch('/api/generate', {
                 method: 'POST',
@@ -146,20 +155,32 @@ export class AIGenerator {
                 })
             });
 
+            this.showProgress(70);
+            this.updateStatus('Processing AI response...', 'processing');
+
             const result = await response.json();
 
             if (result.success && result.diagram) {
-                this.updateStatus('Diagram generated successfully!', 'success');
+                this.showProgress(90);
+                this.updateStatus('Building diagram layout...', 'processing');
                 
                 // Load diagram into editor
                 this.editor.loadDiagram(result.diagram);
                 
+                this.showProgress(100);
+                this.updateStatus('Diagram generated successfully!', 'success');
+                
                 window.showToast('Diagram generated! Navigate to Export to view', 'success');
                 
-                // Auto-navigate to export page after 1.5 seconds
+                // Hide progress bar after success
+                setTimeout(() => {
+                    this.hideProgress();
+                }, 2000);
+                
+                // Auto-navigate to export page
                 setTimeout(() => {
                     document.querySelector('[data-page="export"]').click();
-                }, 1500);
+                }, 2500);
             } else {
                 throw new Error(result.error || 'Generation failed');
             }
@@ -167,9 +188,25 @@ export class AIGenerator {
             console.error('Generation error:', error);
             this.updateStatus('Generation failed: ' + error.message, 'error');
             window.showToast('Failed to generate diagram', 'error');
-        } finally {
-            window.showLoading(false);
+            this.hideProgress();
         }
+    }
+
+    showProgress(percent) {
+        const progressBar = document.getElementById('generation-progress');
+        const progressFill = document.getElementById('progress-fill');
+        const progressText = document.getElementById('progress-text');
+        
+        progressBar.style.display = 'block';
+        progressFill.style.width = percent + '%';
+        progressText.textContent = percent + '%';
+    }
+
+    hideProgress() {
+        const progressBar = document.getElementById('generation-progress');
+        setTimeout(() => {
+            progressBar.style.display = 'none';
+        }, 500);
     }
 
     updateStatus(message, type = 'info') {

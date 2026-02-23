@@ -139,54 +139,77 @@ app.post('/api/generate', async (req, res) => {
       console.warn('Could not read tree.txt, proceeding without icon inventory');
     }
 
-    const prompt = `You are a cloud architecture diagram generator. Analyze the following markdown description and generate a JSON representation of the diagram.
+    // Detect primary cloud provider from markdown
+    const markdownLower = markdown.toLowerCase();
+    let primaryProvider = 'General';
+    if (markdownLower.includes('aws') || markdownLower.includes('amazon web services')) {
+      primaryProvider = 'AWS';
+    } else if (markdownLower.includes('azure') || markdownLower.includes('microsoft azure')) {
+      primaryProvider = 'Azure';
+    } else if (markdownLower.includes('gcp') || markdownLower.includes('google cloud')) {
+      primaryProvider = 'GCP';
+    } else if (markdownLower.includes('kubernetes') || markdownLower.includes('k8s')) {
+      primaryProvider = 'Kubernetes';
+    }
 
-AVAILABLE ICONS (from tree.txt):
-${iconInventory.substring(0, 5000)} // Truncated for performance
+    // Extract provider-specific icons dynamically from tree.txt
+    const providerIcons = extractProviderIcons(iconInventory, primaryProvider);
+    const iconPathList = formatIconPaths(providerIcons, primaryProvider);
+
+    const prompt = `You are a cloud architecture diagram generator. Generate a JSON diagram from the markdown below.
+
+DETECTED CLOUD PROVIDER: ${primaryProvider}
+
+AVAILABLE ICONS (EXACT PATHS - USE ONLY THESE):
+${iconPathList}
+
+CRITICAL INSTRUCTIONS:
+1. ONLY use icon paths from the list above - these are the ONLY icons that exist
+2. Match service names to icon filenames carefully:
+   - Example: "S3" → use "Simple-Storage-Service.svg"
+   - Example: "API Gateway" → use "API-Gateway.svg"  
+   - Example: "Redis Cache" → use "Cache-Redis.svg"
+   - Example: "SQL Database" → use "SQL-Database.svg"
+   - Example: "Cosmos DB" → use "Azure-Cosmos-DB.svg"
+   - Example: "Key Vault" → use "Key-Vaults.svg"
+   - Example: "Front Door" → use "Front-Door-and-CDN-Profiles.svg"
+3. Full path format: "assets/icons/${primaryProvider}/category-name/Icon-File-Name.svg"
+4. Position nodes with 250-350px spacing for readability
+5. All edges MUST use "orthogonal" type
 
 MARKDOWN INPUT:
 ${markdown}
 
-INSTRUCTIONS:
-1. Identify all components, services, and resources mentioned in the markdown
-2. Map each component to an appropriate icon from the available icons (AWS, Azure, GCP, Kubernetes, General, Monitoring)
-3. Determine the relationships and connections between components
-4. Generate a JSON structure with the following format:
-
+OUTPUT JSON FORMAT:
 {
   "nodes": [
     {
       "id": "unique-id",
-      "label": "Service Name",
-      "icon": "path/to/icon.svg",
-      "type": "service-type",
-      "position": { "x": 100, "y": 100 }
+      "label": "Service Display Name",
+      "icon": "assets/icons/${primaryProvider}/category/Exact-Icon-Filename.svg",
+      "type": "service",
+      "position": {"x": 100, "y": 100}
     }
   ],
   "edges": [
     {
       "id": "edge-id",
-      "source": "source-node-id",
-      "target": "target-node-id",
-      "label": "connection description",
+      "source": "source-id",
+      "target": "target-id", 
+      "label": "connection type",
       "type": "orthogonal"
     }
   ],
   "metadata": {
-    "title": "Diagram Title",
+    "title": "Architecture Diagram Title",
     "description": "Brief description",
-    "cloud_provider": "AWS|Azure|GCP|Multi-Cloud|Kubernetes"
+    "cloud_provider": "${primaryProvider}"
   }
 }
 
-IMPORTANT:
-- Use ONLY icons that exist in the tree.txt file
-- Position nodes in a logical layout (spread them out, typical spacing: 200-300px)
-- All edges must use "orthogonal" type for right-angle connectors
-- Icon paths should be relative: "assets/icons/AWS/Compute/Lambda.svg"
-- Make the diagram visually balanced and easy to read
+IMPORTANT: Return ONLY valid JSON. No explanations, no markdown code blocks, just the JSON object.
 
-Return ONLY valid JSON, no explanations or markdown formatting.`;
+Generate now:`;
 
     // Call Ollama API
     const ollamaResponse = await axios.post(
@@ -201,7 +224,7 @@ Return ONLY valid JSON, no explanations or markdown formatting.`;
           num_predict: 4096
         }
       },
-      { timeout: 120000 } // 2 minute timeout
+      { timeout: 300000 } // 5 minute timeout
     );
 
     let generatedText = ollamaResponse.data.response;
@@ -229,6 +252,75 @@ Return ONLY valid JSON, no explanations or markdown formatting.`;
     });
   }
 });
+
+// Helper function to extract provider-specific icons from tree.txt
+function extractProviderIcons(treeContent, provider) {
+  const icons = [];
+  const lines = treeContent.split('\n');
+  let inProviderSection = false;
+  let currentCategory = '';
+  
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    
+    // Detect provider section start: "│       ├── AWS"
+    if (line.match(new RegExp(`│\\s+[├└]── ${provider}\\s*$`))) {
+      inProviderSection = true;
+      continue;
+    }
+    
+    // Detect next provider section at same level (exit current)
+    if (inProviderSection && line.match(/│\s+[├└]── (AWS|Azure|GCP|Kubernetes|General|Monitoring)\s*$/)) {
+      const match = line.match(/│\s+[├└]── (AWS|Azure|GCP|Kubernetes|General|Monitoring)\s*$/);
+      if (match && match[1] !== provider) {
+        break;
+      }
+    }
+    
+    if (inProviderSection) {
+      // Check if this is an icon file line first (more specific): "│       │   │   ├── Athena.svg"
+      const iconMatch = line.match(/│\s+│\s+│\s+[├└]── (.+\.svg)\s*$/);
+      if (iconMatch && currentCategory) {
+        const iconFile = iconMatch[1].trim();
+        icons.push({
+          category: currentCategory,
+          filename: iconFile
+        });
+        continue;
+      }
+      
+      // Extract category (only if NOT an svg file): "│       │   ├── Analytics"
+      const categoryMatch = line.match(/│\s+│\s+[├└]── ([^│\n]+)$/);
+      if (categoryMatch && !categoryMatch[1].includes('.svg')) {
+        currentCategory = categoryMatch[1].trim();
+        continue;
+      }
+    }
+  }
+  
+  console.log(`[Icon Extraction] Found ${icons.length} icons for ${provider}`);
+  return icons;
+}
+
+// Helper function to format icon paths for AI prompt
+function formatIconPaths(icons, provider) {
+  if (icons.length === 0) {
+    return 'No icons found for this provider';
+  }
+  
+  let formatted = '';
+  let currentCategory = '';
+  
+  icons.forEach(icon => {
+    if (icon.category !== currentCategory) {
+      currentCategory = icon.category;
+      formatted += `\n${currentCategory}:\n`;
+    }
+    formatted += `  - assets/icons/${provider}/${icon.category}/${icon.filename}\n`;
+  });
+  
+  return formatted;
+}
 
 // Get icon list
 app.get('/api/icons', async (req, res) => {
