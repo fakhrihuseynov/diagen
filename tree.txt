@@ -1,0 +1,1415 @@
+.
+├── assets
+│   └── icons
+│       ├── AWS
+│       │   ├── Analytics
+│       │   │   ├── Athena.svg
+│       │   │   ├── Clean-Rooms.svg
+│       │   │   ├── CloudSearch.svg
+│       │   │   ├── Data-Exchange.svg
+│       │   │   ├── Data-Pipeline.svg
+│       │   │   ├── DataZone.svg
+│       │   │   ├── EMR.svg
+│       │   │   ├── FinSpace.svg
+│       │   │   ├── Glue-DataBrew.svg
+│       │   │   ├── Glue-Elastic-Views.svg
+│       │   │   ├── Glue.svg
+│       │   │   ├── Kinesis-Data-Analytics.svg
+│       │   │   ├── Kinesis-Data-Streams.svg
+│       │   │   ├── Kinesis-Firehose.svg
+│       │   │   ├── Kinesis-Video-Streams.svg
+│       │   │   ├── Kinesis.svg
+│       │   │   ├── Lake-Formation.svg
+│       │   │   ├── Managed-Streaming-for-Apache-Kafka.svg
+│       │   │   ├── OpenSearch-Service.svg
+│       │   │   ├── QuickSight.svg
+│       │   │   └── Redshift.svg
+│       │   ├── App-Integration
+│       │   │   ├── API-Gateway.svg
+│       │   │   ├── AppFlow.svg
+│       │   │   ├── AppSync.svg
+│       │   │   ├── Console-Mobile-Application.svg
+│       │   │   ├── EventBridge.svg
+│       │   │   ├── Express-Workflows.svg
+│       │   │   ├── Managed-Workflows-for-Apache-Airflow.svg
+│       │   │   ├── MQ.svg
+│       │   │   ├── Simple-Notification-Service.svg
+│       │   │   ├── Simple-Queue-Service.svg
+│       │   │   └── Step-Functions.svg
+│       │   ├── Blockchain
+│       │   │   ├── Managed-Blockchain.svg
+│       │   │   └── Quantum-Ledger-Database.svg
+│       │   ├── Business-Applications
+│       │   │   ├── Alexa-For-Business.svg
+│       │   │   ├── Chime-SDK.svg
+│       │   │   ├── Chime-Voice-Connector.svg
+│       │   │   ├── Chime.svg
+│       │   │   ├── Connect.svg
+│       │   │   ├── Honeycode.svg
+│       │   │   ├── Pinpoint-APIs.svg
+│       │   │   ├── Pinpoint.svg
+│       │   │   ├── Simple-Email-Service.svg
+│       │   │   ├── Supply-Chain.svg
+│       │   │   ├── Wickr.svg
+│       │   │   ├── WorkDocs-SDK.svg
+│       │   │   ├── WorkDocs.svg
+│       │   │   └── WorkMail.svg
+│       │   ├── Cloud-Financial-Management
+│       │   │   ├── Application-Cost-Profiler.svg
+│       │   │   ├── Billing-Conductor.svg
+│       │   │   ├── Budgets.svg
+│       │   │   ├── Cost-and-Usage-Report.svg
+│       │   │   ├── Cost-Explorer.svg
+│       │   │   ├── Reserved-Instance-Reporting.svg
+│       │   │   └── Savings-Plans.svg
+│       │   ├── Compute
+│       │   │   ├── App-Runner.svg
+│       │   │   ├── Application-Auto-Scaling.svg
+│       │   │   ├── Batch.svg
+│       │   │   ├── Bottlerocket.svg
+│       │   │   ├── Compute-Optimizer.svg
+│       │   │   ├── EC2-Auto-Scaling.svg
+│       │   │   ├── EC2-Image-Builder.svg
+│       │   │   ├── EC2.svg
+│       │   │   ├── Elastic-Beanstalk.svg
+│       │   │   ├── Elastic-Fabric-Adapter.svg
+│       │   │   ├── Fargate.svg
+│       │   │   ├── Genomics-CLI.svg
+│       │   │   ├── Lambda.svg
+│       │   │   ├── Lightsail.svg
+│       │   │   ├── Local-Zones.svg
+│       │   │   ├── NICE-DCV.svg
+│       │   │   ├── NICE-EnginFrame.svg
+│       │   │   ├── Nitro-Enclaves.svg
+│       │   │   ├── Outposts-family.svg
+│       │   │   ├── Outposts-rack.svg
+│       │   │   ├── Outposts-servers.svg
+│       │   │   ├── ParallelCluster.svg
+│       │   │   ├── Serverless-Application-Repository.svg
+│       │   │   ├── SimSpace-Weaver.svg
+│       │   │   ├── Thinkbox-Deadline.svg
+│       │   │   ├── Thinkbox-Frost.svg
+│       │   │   ├── Thinkbox-Krakatoa.svg
+│       │   │   ├── Thinkbox-Sequoia.svg
+│       │   │   ├── Thinkbox-Stoke.svg
+│       │   │   ├── Thinkbox-XMesh.svg
+│       │   │   ├── VMware-Cloud-on-AWS.svg
+│       │   │   └── Wavelength.svg
+│       │   ├── Containers
+│       │   │   ├── ECS-Anywhere.svg
+│       │   │   ├── EKS-Anywhere.svg
+│       │   │   ├── EKS-Cloud.svg
+│       │   │   ├── EKS-Cluster.svg
+│       │   │   ├── EKS-Distro.svg
+│       │   │   ├── Elastic-Container-Registry.svg
+│       │   │   ├── Elastic-Container-Service.svg
+│       │   │   ├── Elastic-Kubernetes-Service.svg
+│       │   │   ├── Fargate.svg
+│       │   │   └── Red-Hat-OpenShift-Service-on-AWS.svg
+│       │   ├── Customer-Enablement
+│       │   │   ├── Activate.svg
+│       │   │   ├── IQ.svg
+│       │   │   ├── Managed-Services.svg
+│       │   │   ├── Professional-Services.svg
+│       │   │   ├── rePost.svg
+│       │   │   ├── Support.svg
+│       │   │   └── Training-Certification.svg
+│       │   ├── Database
+│       │   │   ├── Aurora.svg
+│       │   │   ├── Database-Migration-Service.svg
+│       │   │   ├── DocumentDB.svg
+│       │   │   ├── DynamoDB.svg
+│       │   │   ├── ElastiCache.svg
+│       │   │   ├── Keyspaces.svg
+│       │   │   ├── MemoryDB-for-Redis.svg
+│       │   │   ├── Neptune.svg
+│       │   │   ├── RDS-on-VMware.svg
+│       │   │   ├── RDS.svg
+│       │   │   └── Timestream.svg
+│       │   ├── Developer-Tools
+│       │   │   ├── Application-Composer.svg
+│       │   │   ├── Cloud-Control-API.svg
+│       │   │   ├── Cloud-Development-Kit.svg
+│       │   │   ├── Cloud9.svg
+│       │   │   ├── CloudShell.svg
+│       │   │   ├── CodeArtifact.svg
+│       │   │   ├── CodeBuild.svg
+│       │   │   ├── CodeCatalyst.svg
+│       │   │   ├── CodeCommit.svg
+│       │   │   ├── CodeDeploy.svg
+│       │   │   ├── CodePipeline.svg
+│       │   │   ├── CodeStar.svg
+│       │   │   ├── Command-Line-Interface.svg
+│       │   │   ├── Corretto.svg
+│       │   │   ├── Tools-and-SDKs.svg
+│       │   │   └── X-Ray.svg
+│       │   ├── End-User-Computing
+│       │   │   ├── AppStream.svg
+│       │   │   ├── WorkLink.svg
+│       │   │   └── WorkSpaces-Family.svg
+│       │   ├── Front-End-Web-Mobile
+│       │   │   ├── Amplify.svg
+│       │   │   ├── Device-Farm.svg
+│       │   │   └── Location-Service.svg
+│       │   ├── Games
+│       │   │   ├── GameKit.svg
+│       │   │   ├── GameLift.svg
+│       │   │   ├── GameSparks.svg
+│       │   │   ├── Lumberyard.svg
+│       │   │   └── Open-3D-Engine.svg
+│       │   ├── General-Icons
+│       │   │   ├── Marketplace_Dark.svg
+│       │   │   └── Marketplace_Light.svg
+│       │   ├── Internet-of-Things
+│       │   │   ├── FreeRTOS.svg
+│       │   │   ├── IoT-1-Click.svg
+│       │   │   ├── IoT-Analytics.svg
+│       │   │   ├── IoT-Button.svg
+│       │   │   ├── IoT-Core.svg
+│       │   │   ├── IoT-Device-Defender.svg
+│       │   │   ├── IoT-Device-Management.svg
+│       │   │   ├── IoT-EduKit.svg
+│       │   │   ├── IoT-Events.svg
+│       │   │   ├── IoT-ExpressLink.svg
+│       │   │   ├── IoT-FleetWise.svg
+│       │   │   ├── IoT-Greengrass.svg
+│       │   │   ├── IoT-RoboRunner.svg
+│       │   │   ├── IoT-SiteWise.svg
+│       │   │   ├── IoT-Things-Graph.svg
+│       │   │   └── IoT-TwinMaker.svg
+│       │   ├── Machine-Learning
+│       │   │   ├── Apache-MXNet-on-AWS.svg
+│       │   │   ├── Augmented-AI-A2I.svg
+│       │   │   ├── CodeGuru.svg
+│       │   │   ├── CodeWhisperer.svg
+│       │   │   ├── Comprehend-Medical.svg
+│       │   │   ├── Comprehend.svg
+│       │   │   ├── Deep-Learning-AMIs.svg
+│       │   │   ├── Deep-Learning-Containers.svg
+│       │   │   ├── DeepComposer.svg
+│       │   │   ├── DeepLens.svg
+│       │   │   ├── DeepRacer.svg
+│       │   │   ├── DevOps-Guru.svg
+│       │   │   ├── Elastic-Inference.svg
+│       │   │   ├── Forecast.svg
+│       │   │   ├── Fraud-Detector.svg
+│       │   │   ├── HealthLake.svg
+│       │   │   ├── Kendra.svg
+│       │   │   ├── Lex.svg
+│       │   │   ├── Lookout-for-Equipment.svg
+│       │   │   ├── Lookout-for-Metrics.svg
+│       │   │   ├── Lookout-for-Vision.svg
+│       │   │   ├── Monitron.svg
+│       │   │   ├── Neuron.svg
+│       │   │   ├── Omics.svg
+│       │   │   ├── Panorama.svg
+│       │   │   ├── Personalize.svg
+│       │   │   ├── Polly.svg
+│       │   │   ├── Rekognition.svg
+│       │   │   ├── SageMaker-Ground-Truth.svg
+│       │   │   ├── SageMaker-Studio-Lab.svg
+│       │   │   ├── SageMaker.svg
+│       │   │   ├── TensorFlow-on-AWS.svg
+│       │   │   ├── Textract.svg
+│       │   │   ├── TorchServe.svg
+│       │   │   ├── Transcribe.svg
+│       │   │   └── Translate.svg
+│       │   ├── Management-Governance
+│       │   │   ├── AppConfig.svg
+│       │   │   ├── Application-Auto-Scaling.svg
+│       │   │   ├── Auto-Scaling.svg
+│       │   │   ├── Backint-Agent.svg
+│       │   │   ├── Chatbot.svg
+│       │   │   ├── CloudFormation.svg
+│       │   │   ├── CloudTrail.svg
+│       │   │   ├── CloudWatch.svg
+│       │   │   ├── Config.svg
+│       │   │   ├── Control-Tower.svg
+│       │   │   ├── Distro-for-OpenTelemetry.svg
+│       │   │   ├── Fault-Injection-Simulator.svg
+│       │   │   ├── Launch-Wizard.svg
+│       │   │   ├── License-Manager.svg
+│       │   │   ├── Managed-Grafana.svg
+│       │   │   ├── Managed-Service-for-Prometheus.svg
+│       │   │   ├── Management-Console.svg
+│       │   │   ├── OpsWorks.svg
+│       │   │   ├── Organizations.svg
+│       │   │   ├── Personal-Health-Dashboard.svg
+│       │   │   ├── Proton.svg
+│       │   │   ├── Resilience-Hub.svg
+│       │   │   ├── Resource-Explorer.svg
+│       │   │   ├── Service-Catalog.svg
+│       │   │   ├── Service-Management-Connector.svg
+│       │   │   ├── Systems-Manager.svg
+│       │   │   ├── Trusted-Advisor.svg
+│       │   │   └── Well-Architected-Tool.svg
+│       │   ├── Media-Services
+│       │   │   ├── Elastic-Transcoder.svg
+│       │   │   ├── Elemental-Appliances-&-Software.svg
+│       │   │   ├── Elemental-Conductor.svg
+│       │   │   ├── Elemental-Delta.svg
+│       │   │   ├── Elemental-Link.svg
+│       │   │   ├── Elemental-Live.svg
+│       │   │   ├── Elemental-MediaConnect.svg
+│       │   │   ├── Elemental-MediaConvert.svg
+│       │   │   ├── Elemental-MediaLive.svg
+│       │   │   ├── Elemental-MediaPackage.svg
+│       │   │   ├── Elemental-MediaStore.svg
+│       │   │   ├── Elemental-MediaTailor.svg
+│       │   │   ├── Elemental-Server.svg
+│       │   │   ├── Interactive-Video-Service.svg
+│       │   │   ├── Kinesis-Video-Streams.svg
+│       │   │   └── Nimble-Studio.svg
+│       │   ├── Migration-Transfer
+│       │   │   ├── Application-Discovery-Service.svg
+│       │   │   ├── Application-Migration-Service.svg
+│       │   │   ├── DataSync.svg
+│       │   │   ├── Mainframe-Modernization.svg
+│       │   │   ├── Migration-Evaluator.svg
+│       │   │   ├── Migration-Hub.svg
+│       │   │   ├── Server-Migration-Service.svg
+│       │   │   └── Transfer-Family.svg
+│       │   ├── Networking-Content-Delivery
+│       │   │   ├── App-Mesh.svg
+│       │   │   ├── Application-load-balancer.svg
+│       │   │   ├── Client-VPN.svg
+│       │   │   ├── Cloud-Directory.svg
+│       │   │   ├── Cloud-Map.svg
+│       │   │   ├── Cloud-WAN.svg
+│       │   │   ├── CloudFront.svg
+│       │   │   ├── Direct-Connect.svg
+│       │   │   ├── Elastic-Load-Balancing.svg
+│       │   │   ├── Global-Accelerator.svg
+│       │   │   ├── Private-5G.svg
+│       │   │   ├── PrivateLink.svg
+│       │   │   ├── Route-53.svg
+│       │   │   ├── Site-to-Site-VPN.svg
+│       │   │   ├── Transit-Gateway.svg
+│       │   │   ├── Verified-Access.svg
+│       │   │   ├── Virtual-Private-Cloud.svg
+│       │   │   ├── VPC-internet-gateway.svg
+│       │   │   ├── VPC-Lattice.svg
+│       │   │   └── VPC-Subnet.svg
+│       │   ├── Quantum-Technologies
+│       │   │   └── Braket.svg
+│       │   ├── Robotics
+│       │   │   └── RoboMaker.svg
+│       │   ├── Satellite
+│       │   │   └── Ground-Station.svg
+│       │   ├── Security-Identity-Compliance
+│       │   │   ├── Artifact.svg
+│       │   │   ├── Audit-Manager.svg
+│       │   │   ├── Certificate-Manager.svg
+│       │   │   ├── Cloud-Directory.svg
+│       │   │   ├── CloudHSM.svg
+│       │   │   ├── Cognito.svg
+│       │   │   ├── Detective.svg
+│       │   │   ├── Directory-Service.svg
+│       │   │   ├── Firewall-Manager.svg
+│       │   │   ├── GuardDuty.svg
+│       │   │   ├── IAM-Identity-Center.svg
+│       │   │   ├── Identity-and-Access-Management.svg
+│       │   │   ├── Inspector.svg
+│       │   │   ├── Key-Management-Service.svg
+│       │   │   ├── Macie.svg
+│       │   │   ├── Network-Firewall.svg
+│       │   │   ├── Private-Certificate-Authority.svg
+│       │   │   ├── Resource-Access-Manager.svg
+│       │   │   ├── Secrets-Manager.svg
+│       │   │   ├── Security-Hub.svg
+│       │   │   ├── Security-Lake.svg
+│       │   │   ├── Shield.svg
+│       │   │   ├── Signer.svg
+│       │   │   ├── Verified-Permissions.svg
+│       │   │   └── WAF.svg
+│       │   ├── Storage
+│       │   │   ├── Backup.svg
+│       │   │   ├── EFS.svg
+│       │   │   ├── Elastic-Block-Store.svg
+│       │   │   ├── Elastic-Disaster-Recovery.svg
+│       │   │   ├── File-Cache.svg
+│       │   │   ├── FSx-for-Lustre.svg
+│       │   │   ├── FSx-for-NetApp-ONTAP.svg
+│       │   │   ├── FSx-for-OpenZFS.svg
+│       │   │   ├── FSx-for-WFS.svg
+│       │   │   ├── FSx.svg
+│       │   │   ├── S3-on-Outposts.svg
+│       │   │   ├── Simple-Storage-Service-Glacier.svg
+│       │   │   ├── Simple-Storage-Service.svg
+│       │   │   ├── Snowball-Edge.svg
+│       │   │   ├── Snowball.svg
+│       │   │   ├── Snowcone.svg
+│       │   │   ├── Snowmobile.svg
+│       │   │   └── Storage-Gateway.svg
+│       │   └── VR-AR
+│       │       └── Sumerian.svg
+│       ├── Azure
+│       │   ├── ai + machine learning
+│       │   │   ├── AI-Studio.svg
+│       │   │   ├── Anomaly-Detector.svg
+│       │   │   ├── Azure-Applied-AI-Services.svg
+│       │   │   ├── Azure-Experimentation-Studio.svg
+│       │   │   ├── Azure-Object-Understanding.svg
+│       │   │   ├── Azure-OpenAI.svg
+│       │   │   ├── Batch-AI.svg
+│       │   │   ├── Bonsai.svg
+│       │   │   ├── Bot-Services.svg
+│       │   │   ├── Cognitive-Search.svg
+│       │   │   ├── Cognitive-Services-Decisions.svg
+│       │   │   ├── Cognitive-Services.svg
+│       │   │   ├── Computer-Vision.svg
+│       │   │   ├── Content-Moderators.svg
+│       │   │   ├── Content-Safety.svg
+│       │   │   ├── Custom-Vision.svg
+│       │   │   ├── Face-APIs.svg
+│       │   │   ├── Form-Recognizers.svg
+│       │   │   ├── Genomics-Accounts.svg
+│       │   │   ├── Genomics.svg
+│       │   │   ├── Immersive-Readers.svg
+│       │   │   ├── Language-Understanding.svg
+│       │   │   ├── Language.svg
+│       │   │   ├── Machine-Learning-Studio-(Classic)-Web-Services.svg
+│       │   │   ├── Machine-Learning-Studio-Web-Service-Plans.svg
+│       │   │   ├── Machine-Learning-Studio-Workspaces.svg
+│       │   │   ├── Machine-Learning.svg
+│       │   │   ├── Metrics-Advisor.svg
+│       │   │   ├── Personalizers.svg
+│       │   │   ├── QnA-Makers.svg
+│       │   │   ├── Serverless-Search.svg
+│       │   │   ├── Speech-Services.svg
+│       │   │   └── Translator-Text.svg
+│       │   ├── analytics
+│       │   │   ├── Analysis-Services.svg
+│       │   │   ├── Azure-Data-Explorer-Clusters.svg
+│       │   │   ├── Azure-Databricks.svg
+│       │   │   ├── Azure-Synapse-Analytics.svg
+│       │   │   ├── Azure-Workbooks.svg
+│       │   │   ├── Data-Factories.svg
+│       │   │   ├── Data-Lake-Analytics.svg
+│       │   │   ├── Data-Lake-Store-Gen1.svg
+│       │   │   ├── Endpoint-Analytics.svg
+│       │   │   ├── Event-Hub-Clusters.svg
+│       │   │   ├── Event-Hubs.svg
+│       │   │   ├── HD-Insight-Clusters.svg
+│       │   │   ├── Log-Analytics-Workspaces.svg
+│       │   │   ├── Power-BI-Embedded.svg
+│       │   │   ├── Power-Platform.svg
+│       │   │   ├── Private-Link-Services.svg
+│       │   │   └── Stream-Analytics-Jobs.svg
+│       │   ├── app services
+│       │   │   ├── App-Service-Certificates.svg
+│       │   │   ├── App-Service-Domains.svg
+│       │   │   ├── App-Service-Environments.svg
+│       │   │   ├── App-Service-Plans.svg
+│       │   │   ├── App-Services.svg
+│       │   │   ├── CDN-Profiles.svg
+│       │   │   ├── Cognitive-Search.svg
+│       │   │   └── Notification-Hubs.svg
+│       │   ├── azure ecosystem
+│       │   │   ├── Applens.svg
+│       │   │   ├── Azure-Hybrid-Center.svg
+│       │   │   └── Collaborative-Service.svg
+│       │   ├── azure stack
+│       │   │   ├── Capacity.svg
+│       │   │   ├── Infrastructure-Backup.svg
+│       │   │   ├── Multi-Tenancy.svg
+│       │   │   ├── Offers.svg
+│       │   │   ├── Plans.svg
+│       │   │   ├── Updates.svg
+│       │   │   └── User-Subscriptions.svg
+│       │   ├── blockchain
+│       │   │   ├── ABS-Member.svg
+│       │   │   ├── Azure-Blockchain-Service.svg
+│       │   │   ├── Azure-Token-Service.svg
+│       │   │   ├── Blockchain-Applications.svg
+│       │   │   ├── Consortium.svg
+│       │   │   └── Outbound-Connection.svg
+│       │   ├── compute
+│       │   │   ├── 00330-icon-service-Workspaces.svg
+│       │   │   ├── AKS-Automatic.svg
+│       │   │   ├── App-Services.svg
+│       │   │   ├── Application-Group.svg
+│       │   │   ├── Automanaged-VM.svg
+│       │   │   ├── Availability-Sets.svg
+│       │   │   ├── Azure-Compute-Galleries.svg
+│       │   │   ├── Azure-Spring-Apps.svg
+│       │   │   ├── Batch-Accounts.svg
+│       │   │   ├── Cloud-Services-(Classic).svg
+│       │   │   ├── Compute-Fleet.svg
+│       │   │   ├── Container-Instances.svg
+│       │   │   ├── Container-Services-(Deprecated).svg
+│       │   │   ├── Disk-Encryption-Sets.svg
+│       │   │   ├── Disks-(Classic).svg
+│       │   │   ├── Disks-Snapshots.svg
+│       │   │   ├── Disks.svg
+│       │   │   ├── Function-Apps.svg
+│       │   │   ├── Host-Groups.svg
+│       │   │   ├── Host-Pools.svg
+│       │   │   ├── Hosts.svg
+│       │   │   ├── Image-Definitions.svg
+│       │   │   ├── Image-Templates.svg
+│       │   │   ├── Image-Versions.svg
+│       │   │   ├── Images.svg
+│       │   │   ├── Kubernetes-Services.svg
+│       │   │   ├── Maintenance-Configuration.svg
+│       │   │   ├── Managed-Service-Fabric.svg
+│       │   │   ├── Mesh-Applications.svg
+│       │   │   ├── Metrics-Advisor.svg
+│       │   │   ├── OS-Images-(Classic).svg
+│       │   │   ├── Restore-Points-Collections.svg
+│       │   │   ├── Restore-Points.svg
+│       │   │   ├── Service-Fabric-Clusters.svg
+│       │   │   ├── Shared-Image-Galleries.svg
+│       │   │   ├── Virtual-Machine.svg
+│       │   │   ├── Virtual-Machines-(Classic).svg
+│       │   │   ├── VM-Images-(Classic).svg
+│       │   │   ├── VM-Scale-Sets.svg
+│       │   │   └── Workspaces.svg
+│       │   ├── containers
+│       │   │   ├── App-Services.svg
+│       │   │   ├── Azure-Red-Hat-OpenShift.svg
+│       │   │   ├── Batch-Accounts.svg
+│       │   │   ├── Container-Instances.svg
+│       │   │   ├── Container-Registries.svg
+│       │   │   ├── Kubernetes-Services.svg
+│       │   │   └── Service-Fabric-Clusters.svg
+│       │   ├── databases
+│       │   │   ├── Azure-Cosmos-DB.svg
+│       │   │   ├── Azure-Data-Explorer-Clusters.svg
+│       │   │   ├── Azure-Database-MariaDB-Server.svg
+│       │   │   ├── Azure-Database-Migration-Services.svg
+│       │   │   ├── Azure-Database-MySQL-Server.svg
+│       │   │   ├── Azure-Database-PostgreSQL-Server-Group.svg
+│       │   │   ├── Azure-Database-PostgreSQL-Server.svg
+│       │   │   ├── Azure-SQL-Edge.svg
+│       │   │   ├── Azure-SQL-Server-Stretch-Databases.svg
+│       │   │   ├── Azure-SQL-VM.svg
+│       │   │   ├── Azure-SQL.svg
+│       │   │   ├── Azure-Synapse-Analytics.svg
+│       │   │   ├── Cache-Redis.svg
+│       │   │   ├── Data-Factories.svg
+│       │   │   ├── Elastic-Job-Agents.svg
+│       │   │   ├── Instance-Pools.svg
+│       │   │   ├── Managed-Database.svg
+│       │   │   ├── Oracle-Database.svg
+│       │   │   ├── SQL-Data-Warehouses.svg
+│       │   │   ├── SQL-Database.svg
+│       │   │   ├── SQL-Elastic-Pools.svg
+│       │   │   ├── SQL-Managed-Instance.svg
+│       │   │   ├── SQL-Server-Registries.svg
+│       │   │   ├── SQL-Server.svg
+│       │   │   ├── SSIS-Lift-And-Shift-IR.svg
+│       │   │   └── Virtual-Clusters.svg
+│       │   ├── devops
+│       │   │   ├── API-Connections.svg
+│       │   │   ├── API-Management-Services.svg
+│       │   │   ├── Application-Insights.svg
+│       │   │   ├── Azure-DevOps.svg
+│       │   │   ├── Change-Analysis.svg
+│       │   │   ├── CloudTest.svg
+│       │   │   ├── Code-Optimization.svg
+│       │   │   ├── DevOps-Starter.svg
+│       │   │   ├── DevTest-Labs.svg
+│       │   │   ├── Lab-Accounts.svg
+│       │   │   ├── Lab-Services.svg
+│       │   │   ├── Load-Testing.svg
+│       │   │   ├── Managed-DevOps-Pools.svg
+│       │   │   └── Workspace-Gateway.svg
+│       │   ├── hybrid + multicloud
+│       │   │   ├── Azure-Monitor-Pipeline.svg
+│       │   │   ├── Azure-Operator-5G-Core.svg
+│       │   │   ├── Azure-Operator-Insights.svg
+│       │   │   ├── Azure-Operator-Nexus.svg
+│       │   │   ├── Azure-Operator-Service-Manager.svg
+│       │   │   └── Azure-Programmable-Connectivity.svg
+│       │   ├── identity
+│       │   │   ├── Active-Directory-Connect-Health.svg
+│       │   │   ├── Administrative-Units.svg
+│       │   │   ├── API-Proxy.svg
+│       │   │   ├── App-Registrations.svg
+│       │   │   ├── Azure-AD-B2C.svg
+│       │   │   ├── Azure-Information-Protection.svg
+│       │   │   ├── Enterprise-Applications.svg
+│       │   │   ├── Entra-Connect-Health.svg
+│       │   │   ├── Entra-Connect-Sync.svg
+│       │   │   ├── Entra-Connect.svg
+│       │   │   ├── Entra-Domain-Services.svg
+│       │   │   ├── Entra-Global-Secure-Access.svg
+│       │   │   ├── Entra-ID-Protection.svg
+│       │   │   ├── Entra-Identity-Custom-Roles.svg
+│       │   │   ├── Entra-Identity-Licenses.svg
+│       │   │   ├── Entra-Identity-Roles-and-Administrators.svg
+│       │   │   ├── Entra-Internet-Access.svg
+│       │   │   ├── Entra-Managed-Identities.svg
+│       │   │   ├── Entra-Private-Access.svg
+│       │   │   ├── Entra-Privleged-Identity-Management.svg
+│       │   │   ├── Entra-Verified-ID.svg
+│       │   │   ├── External-Identities.svg
+│       │   │   ├── Groups.svg
+│       │   │   ├── Identity-Governance.svg
+│       │   │   ├── Managed-Identities.svg
+│       │   │   ├── Multi-Factor-Authentication.svg
+│       │   │   ├── Security.svg
+│       │   │   ├── Tenant-Properties.svg
+│       │   │   ├── User-Settings.svg
+│       │   │   ├── Users.svg
+│       │   │   ├── Verifiable-Credentials.svg
+│       │   │   └── Verification-As-A-Service.svg
+│       │   ├── integration
+│       │   │   ├── API-Connections.svg
+│       │   │   ├── API-Management-Services.svg
+│       │   │   ├── App-Configuration.svg
+│       │   │   ├── Azure-API-for-FHIR.svg
+│       │   │   ├── Azure-Data-Catalog.svg
+│       │   │   ├── Azure-Databox-Gateway.svg
+│       │   │   ├── Azure-Service-Bus.svg
+│       │   │   ├── Azure-SQL-Server-Stretch-Databases.svg
+│       │   │   ├── Azure-Stack-Edge.svg
+│       │   │   ├── Business-Process-Tracking.svg
+│       │   │   ├── Data-Factories.svg
+│       │   │   ├── Event-Grid-Domains.svg
+│       │   │   ├── Event-Grid-Subscriptions.svg
+│       │   │   ├── Event-Grid-Topics.svg
+│       │   │   ├── Integration-Accounts.svg
+│       │   │   ├── Integration-Environments.svg
+│       │   │   ├── Integration-Service-Environments.svg
+│       │   │   ├── Logic-Apps-Custom-Connector.svg
+│       │   │   ├── Logic-Apps.svg
+│       │   │   ├── Partner-Namespace.svg
+│       │   │   ├── Partner-Registration.svg
+│       │   │   ├── Partner-Topic.svg
+│       │   │   ├── Power-Platform.svg
+│       │   │   ├── Relays.svg
+│       │   │   ├── SendGrid-Accounts.svg
+│       │   │   ├── Software-as-a-Service.svg
+│       │   │   ├── SQL-Data-Warehouses.svg
+│       │   │   ├── StorSimple-Device-Managers.svg
+│       │   │   └── System-Topic.svg
+│       │   ├── intune
+│       │   │   ├── Client-Apps.svg
+│       │   │   ├── Device-Compliance.svg
+│       │   │   ├── Device-Configuration.svg
+│       │   │   ├── Device-Enrollment.svg
+│       │   │   ├── Device-Security-Apple.svg
+│       │   │   ├── Device-Security-Google.svg
+│       │   │   ├── Device-Security-Windows.svg
+│       │   │   ├── Devices.svg
+│       │   │   ├── eBooks.svg
+│       │   │   ├── Entra-Identity-Roles-and-Administrators.svg
+│       │   │   ├── Exchange-Access.svg
+│       │   │   ├── Intune-App-Protection.svg
+│       │   │   ├── Intune-For-Education.svg
+│       │   │   ├── Intune.svg
+│       │   │   ├── Mindaro.svg
+│       │   │   ├── Security-Baselines.svg
+│       │   │   ├── Software-Updates.svg
+│       │   │   └── Tenant-Status.svg
+│       │   ├── iot
+│       │   │   ├── Azure-Cosmos-DB.svg
+│       │   │   ├── Azure-Databox-Gateway.svg
+│       │   │   ├── Azure-IoT-Operations.svg
+│       │   │   ├── Azure-Maps-Accounts.svg
+│       │   │   ├── Azure-Stack-HCI-Sizer.svg
+│       │   │   ├── Azure-Stack.svg
+│       │   │   ├── Device-Provisioning-Services.svg
+│       │   │   ├── Digital-Twins.svg
+│       │   │   ├── Event-Grid-Subscriptions.svg
+│       │   │   ├── Event-Hub-Clusters.svg
+│       │   │   ├── Event-Hubs.svg
+│       │   │   ├── Function-Apps.svg
+│       │   │   ├── Industrial-IoT.svg
+│       │   │   ├── IoT-Central-Applications.svg
+│       │   │   ├── IoT-Edge.svg
+│       │   │   ├── IoT-Hub.svg
+│       │   │   ├── Logic-Apps.svg
+│       │   │   ├── Machine-Learning-Studio-(Classic)-Web-Services.svg
+│       │   │   ├── Machine-Learning-Studio-Web-Service-Plans.svg
+│       │   │   ├── Machine-Learning-Studio-Workspaces.svg
+│       │   │   ├── Notification-Hub-Namespaces.svg
+│       │   │   ├── Notification-Hubs.svg
+│       │   │   ├── Stack-HCI-Premium.svg
+│       │   │   ├── Stream-Analytics-Jobs.svg
+│       │   │   ├── Time-Series-Data-Sets.svg
+│       │   │   ├── Time-Series-Insights-Access-Policies.svg
+│       │   │   ├── Time-Series-Insights-Environments.svg
+│       │   │   ├── Time-Series-Insights-Event-Sources.svg
+│       │   │   └── Windows10-Core-Services.svg
+│       │   ├── management + governance
+│       │   │   ├── Activity-Log.svg
+│       │   │   ├── Advisor.svg
+│       │   │   ├── Alerts.svg
+│       │   │   ├── Application-Insights.svg
+│       │   │   ├── Arc-Machines.svg
+│       │   │   ├── Automation-Accounts.svg
+│       │   │   ├── Azure-Arc.svg
+│       │   │   ├── Azure-Lighthouse.svg
+│       │   │   ├── Blueprints.svg
+│       │   │   ├── Compliance.svg
+│       │   │   ├── Cost-Management-and-Billing.svg
+│       │   │   ├── Customer-Lockbox-for-Microsoft-Azure.svg
+│       │   │   ├── Diagnostics-Settings.svg
+│       │   │   ├── Education.svg
+│       │   │   ├── Intune-Trends.svg
+│       │   │   ├── Log-Analytics-Workspaces.svg
+│       │   │   ├── MachinesAzureArc.svg
+│       │   │   ├── Managed-Applications-Center.svg
+│       │   │   ├── Managed-Desktop.svg
+│       │   │   ├── Metrics.svg
+│       │   │   ├── Monitor.svg
+│       │   │   ├── My-Customers.svg
+│       │   │   ├── Operation-Log-(Classic).svg
+│       │   │   ├── Policy.svg
+│       │   │   ├── Recovery-Services-Vaults.svg
+│       │   │   ├── Resource-Graph-Explorer.svg
+│       │   │   ├── Resources-Provider.svg
+│       │   │   ├── Scheduler-Job-Collections.svg
+│       │   │   ├── Service-Catalog-MAD.svg
+│       │   │   ├── Service-Providers.svg
+│       │   │   ├── Solutions.svg
+│       │   │   ├── Universal-Print.svg
+│       │   │   └── User-Privacy.svg
+│       │   ├── menu
+│       │   │   └── Keys.svg
+│       │   ├── migrate
+│       │   │   ├── Azure-Databox-Gateway.svg
+│       │   │   ├── Azure-Migrate.svg
+│       │   │   ├── Azure-Stack-Edge.svg
+│       │   │   ├── Cost-Management-and-Billing.svg
+│       │   │   ├── Data-Box.svg
+│       │   │   └── Recovery-Services-Vaults.svg
+│       │   ├── migration
+│       │   │   └── Azure-Database-Migration-Services.svg
+│       │   ├── mixed reality
+│       │   │   ├── Remote-Rendering.svg
+│       │   │   └── Spatial-Anchor-Accounts.svg
+│       │   ├── mobile
+│       │   │   ├── App-Services.svg
+│       │   │   ├── Notification-Hubs.svg
+│       │   │   └── Power-Platform.svg
+│       │   ├── monitor
+│       │   │   ├── Activity-Log.svg
+│       │   │   ├── Application-Insights.svg
+│       │   │   ├── Auto-Scale.svg
+│       │   │   ├── Azure-Monitors-for-SAP-Solutions.svg
+│       │   │   ├── Azure-Workbooks.svg
+│       │   │   ├── Change-Analysis.svg
+│       │   │   ├── Diagnostics-Settings.svg
+│       │   │   ├── Log-Analytics-Workspaces.svg
+│       │   │   ├── Metrics.svg
+│       │   │   ├── Monitor.svg
+│       │   │   └── Network-Watcher.svg
+│       │   ├── networking
+│       │   │   ├── Application-Gateway-Containers.svg
+│       │   │   ├── Application-Gateways.svg
+│       │   │   ├── ATM-Multistack.svg
+│       │   │   ├── Azure-Communications-Gateway.svg
+│       │   │   ├── Azure-Firewall-Manager.svg
+│       │   │   ├── Azure-Firewall-Policy.svg
+│       │   │   ├── Bastions.svg
+│       │   │   ├── CDN-Profiles.svg
+│       │   │   ├── Connected-Cache.svg
+│       │   │   ├── Connections.svg
+│       │   │   ├── DDoS-Protection-Plans.svg
+│       │   │   ├── DNS-Multistack.svg
+│       │   │   ├── DNS-Private-Resolver.svg
+│       │   │   ├── DNS-Security-Policy.svg
+│       │   │   ├── DNS-Zones.svg
+│       │   │   ├── ExpressRoute-Circuits.svg
+│       │   │   ├── Firewalls.svg
+│       │   │   ├── Front-Door-and-CDN-Profiles.svg
+│       │   │   ├── IP-Address-manager.svg
+│       │   │   ├── IP-Groups.svg
+│       │   │   ├── Load-Balancer-Hub.svg
+│       │   │   ├── Load-Balancers.svg
+│       │   │   ├── Local-Network-Gateways.svg
+│       │   │   ├── NAT.svg
+│       │   │   ├── Network-Interfaces.svg
+│       │   │   ├── Network-Security-Groups.svg
+│       │   │   ├── Network-Watcher.svg
+│       │   │   ├── On-Premises-Data-Gateways.svg
+│       │   │   ├── Private-Link-Service.svg
+│       │   │   ├── Private-Link-Services.svg
+│       │   │   ├── Private-Link.svg
+│       │   │   ├── Proximity-Placement-Groups.svg
+│       │   │   ├── Public-IP-Addresses-(Classic).svg
+│       │   │   ├── Public-IP-Addresses.svg
+│       │   │   ├── Public-IP-Prefixes.svg
+│       │   │   ├── Reserved-IP-Addresses-(Classic).svg
+│       │   │   ├── Resource-Management-Private-Link.svg
+│       │   │   ├── Route-Filters.svg
+│       │   │   ├── Route-Tables.svg
+│       │   │   ├── Service-Endpoint-Policies.svg
+│       │   │   ├── Spot-VM.svg
+│       │   │   ├── Spot-VMSS.svg
+│       │   │   ├── Subnet.svg
+│       │   │   ├── Traffic-Manager-Profiles.svg
+│       │   │   ├── Virtual-Network-Gateways.svg
+│       │   │   ├── Virtual-Networks-(Classic).svg
+│       │   │   ├── Virtual-Networks.svg
+│       │   │   ├── Virtual-Router.svg
+│       │   │   ├── Virtual-WAN-Hub.svg
+│       │   │   ├── Virtual-WANs.svg
+│       │   │   └── Web-Application-Firewall-Policies(WAF).svg
+│       │   ├── new icons
+│       │   │   ├── 030777508 -icon-service-Service-Group-Relationships.svg
+│       │   │   ├── AI-at-Edge.svg
+│       │   │   ├── AKS-Network-Policy.svg
+│       │   │   ├── Azure-App-Testing.svg
+│       │   │   ├── Azure-Consumption-Commitment.svg
+│       │   │   ├── Azure-Container-Storage.svg
+│       │   │   ├── Azure-Linux.svg
+│       │   │   ├── Azure-Local.svg
+│       │   │   ├── Azure-Managed-Redis.svg
+│       │   │   ├── Breeze.svg
+│       │   │   ├── Data-Virtualization.svg
+│       │   │   ├── Edge-Actions.svg
+│       │   │   ├── Edge-Storage-Accelerator.svg
+│       │   │   ├── Engage-Center-Connect.svg
+│       │   │   ├── external-id-modified.svg
+│       │   │   ├── external-id.svg
+│       │   │   ├── FRD-QA.svg
+│       │   │   ├── Hybrid-Connectivity-Hub.svg
+│       │   │   ├── Kubernetes-Hub.svg
+│       │   │   ├── Landing-Zone.svg
+│       │   │   ├── Load-Balancer-Hub.svg
+│       │   │   ├── Logic-Apps-Template.svg
+│       │   │   ├── Microsoft-Discovery.svg
+│       │   │   ├── Monitor-Issues.svg
+│       │   │   ├── Network-Foundation-Hub.svg
+│       │   │   ├── Network-Security-Hub.svg
+│       │   │   ├── Operation-Center.svg
+│       │   │   ├── Planetary-Computer-Pro.svg
+│       │   │   ├── promethus.svg
+│       │   │   ├── pubsub.svg
+│       │   │   ├── Scheduled-Actions.svg
+│       │   │   ├── Service-Groups.svg
+│       │   │   ├── SQL-Database-Fleet-Manager.svg
+│       │   │   ├── Stage-Maps.svg
+│       │   │   ├── Storage-Hubs.svg
+│       │   │   ├── Toolchain-Orchestrator.svg
+│       │   │   ├── VNet-Appliance.svg
+│       │   │   ├── VPNClientWindows.svg
+│       │   │   └── Workload-Orchestration.svg
+│       │   ├── other
+│       │   │   ├── AKS-Istio.svg
+│       │   │   ├── App-Compliance-Automation.svg
+│       │   │   ├── App-Registrations.svg
+│       │   │   ├── Aquila.svg
+│       │   │   ├── Arc-Data-services.svg
+│       │   │   ├── Arc-Kubernetes.svg
+│       │   │   ├── Arc-PostgreSQL .svg
+│       │   │   ├── Arc-SQL-Managed-Instance.svg
+│       │   │   ├── Arc-SQL-Server.svg
+│       │   │   ├── AVS-VM.svg
+│       │   │   ├── Azure-A.svg
+│       │   │   ├── Azure-Backup-Center.svg
+│       │   │   ├── Azure-Center-for-SAP.svg
+│       │   │   ├── Azure-Chaos-Studio.svg
+│       │   │   ├── Azure-Cloud-Shell.svg
+│       │   │   ├── Azure-Communication-Services.svg
+│       │   │   ├── Azure-Compute-Galleries.svg
+│       │   │   ├── Azure-Deployment-Environments.svg
+│       │   │   ├── Azure-Dev-Tunnels.svg
+│       │   │   ├── Azure-Edge-Hardware-Center.svg
+│       │   │   ├── Azure-HPC-Workbenches.svg
+│       │   │   ├── Azure-Load-Testing.svg
+│       │   │   ├── Azure-Managed-Grafana.svg
+│       │   │   ├── Azure-Monitor-Dashboard.svg
+│       │   │   ├── Azure-Network-Function-Manager-Functions.svg
+│       │   │   ├── Azure-Network-Function-Manager.svg
+│       │   │   ├── Azure-Orbital.svg
+│       │   │   ├── Azure-Quotas.svg
+│       │   │   ├── Azure-Sphere.svg
+│       │   │   ├── Azure-Storage-Mover.svg
+│       │   │   ├── Azure-Support-Center-Blue.svg
+│       │   │   ├── Azure-Sustainability.svg
+│       │   │   ├── Azure-Video-Indexer.svg
+│       │   │   ├── Azure-Virtual-Desktop.svg
+│       │   │   ├── Azure-VMware-Solution.svg
+│       │   │   ├── AzureAttestation.svg
+│       │   │   ├── Azurite.svg
+│       │   │   ├── Backup-Vault.svg
+│       │   │   ├── Bare-Metal-Infrastructure.svg
+│       │   │   ├── Capacity-Reservation-Groups.svg
+│       │   │   ├── Central-Service-Instance-For-SAP.svg
+│       │   │   ├── Ceres.svg
+│       │   │   ├── Cloud-Services-(extended-support).svg
+│       │   │   ├── Community-Images.svg
+│       │   │   ├── Compliance-Center.svg
+│       │   │   ├── Confidential-Ledgers.svg
+│       │   │   ├── Connected-Vehicle-Platform.svg
+│       │   │   ├── Container-Apps-Environments.svg
+│       │   │   ├── Cost-Export.svg
+│       │   │   ├── Custom-IP-Prefix.svg
+│       │   │   ├── Dashboard-Hub.svg
+│       │   │   ├── Data-Collection-Rules.svg
+│       │   │   ├── Database-Instance-For-SAP.svg
+│       │   │   ├── Dedicated-HSM.svg
+│       │   │   ├── Defender-CM-Local-Manager.svg
+│       │   │   ├── Defender-DCS-Controller.svg
+│       │   │   ├── Defender-Distributer-Control-System.svg
+│       │   │   ├── Defender-Engineering-Station.svg
+│       │   │   ├── Defender-External-Management.svg
+│       │   │   ├── Defender-Freezer-Monitor.svg
+│       │   │   ├── Defender-Historian.svg
+│       │   │   ├── Defender-HMI.svg
+│       │   │   ├── Defender-Industrial-Packaging-System.svg
+│       │   │   ├── Defender-Industrial-Printer.svg
+│       │   │   ├── Defender-Industrial-Robot.svg
+│       │   │   ├── Defender-Industrial-Scale-System.svg
+│       │   │   ├── Defender-Marquee.svg
+│       │   │   ├── Defender-Meter.svg
+│       │   │   ├── Defender-PLC.svg
+│       │   │   ├── Defender-Pneumatic-Device.svg
+│       │   │   ├── Defender-Programable-Board.svg
+│       │   │   ├── Defender-Relay.svg
+│       │   │   ├── Defender-Robot-Controller.svg
+│       │   │   ├── Defender-RTU.svg
+│       │   │   ├── Defender-Sensor.svg
+│       │   │   ├── Defender-Slot.svg
+│       │   │   ├── Defender-Web-Guiding-System.svg
+│       │   │   ├── Device-Update-IoT-Hub.svg
+│       │   │   ├── Disk-Pool.svg
+│       │   │   ├── Edge-Management.svg
+│       │   │   ├── Elastic-SAN.svg
+│       │   │   ├── Entra-Identity-Licenses.svg
+│       │   │   ├── Exchange-On-Premises-Access.svg
+│       │   │   ├── Express-Route-Traffic-Collector.svg
+│       │   │   ├── ExpressRoute-Direct.svg
+│       │   │   ├── FHIR-Service.svg
+│       │   │   ├── Fiji.svg
+│       │   │   ├── HDI-AKS-Cluster.svg
+│       │   │   ├── IcM-Troubleshooting.svg
+│       │   │   ├── Instance-Pools.svg
+│       │   │   ├── Internet-Analyzer-Profiles.svg
+│       │   │   ├── Kubernetes-Fleet-Manager.svg
+│       │   │   ├── Local-Network-Gateways.svg
+│       │   │   ├── Log-Analytics-Query-Pack.svg
+│       │   │   ├── Managed-Instance-Apache-Cassandra.svg
+│       │   │   ├── MedTech-Service.svg
+│       │   │   ├── Microsoft-Dev-Box.svg
+│       │   │   ├── Mission-Landing-Zone.svg
+│       │   │   ├── Mobile-Networks.svg
+│       │   │   ├── Modular-Data-Center.svg
+│       │   │   ├── Monitor-Health-Models.svg
+│       │   │   ├── Network-Managers.svg
+│       │   │   ├── Network-Security-Perimeters.svg
+│       │   │   ├── Open-Supply-Chain-Platform.svg
+│       │   │   ├── OSConfig.svg
+│       │   │   ├── Peering-Service.svg
+│       │   │   ├── Peerings.svg
+│       │   │   ├── Private-Endpoints.svg
+│       │   │   ├── Reserved-Capacity.svg
+│       │   │   ├── Resource-Guard.svg
+│       │   │   ├── Resource-Mover.svg
+│       │   │   ├── RTOS.svg
+│       │   │   ├── Savings-Plans.svg
+│       │   │   ├── SCVMM-Management-Servers.svg
+│       │   │   ├── Sonic-Dash.svg
+│       │   │   ├── SSH-Keys.svg
+│       │   │   ├── Storage-Functions.svg
+│       │   │   ├── Targets-Management.svg
+│       │   │   ├── Template-Specs.svg
+│       │   │   ├── Test-Base.svg
+│       │   │   ├── Update-Management-Center.svg
+│       │   │   ├── Video-Analyzers.svg
+│       │   │   ├── Virtual-Enclaves.svg
+│       │   │   ├── Virtual-Instance-for-SAP.svg
+│       │   │   ├── Virtual-Visits-Builder.svg
+│       │   │   ├── VM-App-Definitions.svg
+│       │   │   ├── VM-App-Versions.svg
+│       │   │   ├── VM-Image-Version.svg
+│       │   │   ├── WAC-Installer.svg
+│       │   │   ├── WAC.svg
+│       │   │   ├── Web-App-+-Database.svg
+│       │   │   ├── Web-Jobs.svg
+│       │   │   ├── Windows-Notification-Services.svg
+│       │   │   └── Worker-Container-App.svg
+│       │   ├── overall
+│       │   │   ├── All-Resources.svg
+│       │   │   ├── Backlog.svg
+│       │   │   ├── Biz-Talk.svg
+│       │   │   ├── Blob-Block.svg
+│       │   │   ├── Blob-Page.svg
+│       │   │   ├── Branch.svg
+│       │   │   ├── Browser.svg
+│       │   │   ├── Bug.svg
+│       │   │   ├── Builds.svg
+│       │   │   ├── Cache.svg
+│       │   │   ├── Code.svg
+│       │   │   ├── Commit.svg
+│       │   │   ├── Controls-Horizontal.svg
+│       │   │   ├── Controls.svg
+│       │   │   ├── Cost-Alerts.svg
+│       │   │   ├── Cost-Analysis.svg
+│       │   │   ├── Cost-Budgets.svg
+│       │   │   ├── Cost-Management-and-Billing.svg
+│       │   │   ├── Cost-Management.svg
+│       │   │   ├── Counter.svg
+│       │   │   ├── Cubes.svg
+│       │   │   ├── Dashboard.svg
+│       │   │   ├── Dev-Console.svg
+│       │   │   ├── Download.svg
+│       │   │   ├── Error.svg
+│       │   │   ├── Extensions.svg
+│       │   │   ├── Feature-Previews.svg
+│       │   │   ├── File.svg
+│       │   │   ├── Files.svg
+│       │   │   ├── Folder-Blank.svg
+│       │   │   ├── Folder-Website.svg
+│       │   │   ├── Free-Services.svg
+│       │   │   ├── FTP.svg
+│       │   │   ├── Gear.svg
+│       │   │   ├── Globe-Error.svg
+│       │   │   ├── Globe-Success.svg
+│       │   │   ├── Globe-Warning.svg
+│       │   │   ├── Guide.svg
+│       │   │   ├── Heart.svg
+│       │   │   ├── Help-and-Support.svg
+│       │   │   ├── Image.svg
+│       │   │   ├── Information.svg
+│       │   │   ├── Input-Output.svg
+│       │   │   ├── Journey-Hub.svg
+│       │   │   ├── Launch-Portal.svg
+│       │   │   ├── Learn.svg
+│       │   │   ├── Load-Test.svg
+│       │   │   ├── Location.svg
+│       │   │   ├── Log-Streaming.svg
+│       │   │   ├── Management-Groups.svg
+│       │   │   ├── Management-Portal.svg
+│       │   │   ├── Marketplace-Management.svg
+│       │   │   ├── Marketplace.svg
+│       │   │   ├── Media-File.svg
+│       │   │   ├── Media.svg
+│       │   │   ├── Mobile-Engagement.svg
+│       │   │   ├── Mobile.svg
+│       │   │   ├── Module.svg
+│       │   │   ├── Power-Up.svg
+│       │   │   ├── Power.svg
+│       │   │   ├── Powershell.svg
+│       │   │   ├── Preview-Features.svg
+│       │   │   ├── Process-Explorer.svg
+│       │   │   ├── Production-Ready-Database.svg
+│       │   │   ├── Quickstart-Center.svg
+│       │   │   ├── Recent.svg
+│       │   │   ├── Region-Management.svg
+│       │   │   ├── Reservations.svg
+│       │   │   ├── Resource-Explorer.svg
+│       │   │   ├── Resource-Group-List.svg
+│       │   │   ├── Resource-Groups.svg
+│       │   │   ├── Resource-Linked.svg
+│       │   │   ├── Scheduler.svg
+│       │   │   ├── Search-Grid.svg
+│       │   │   ├── Search.svg
+│       │   │   ├── Server-Farm.svg
+│       │   │   ├── Service-Health.svg
+│       │   │   ├── SSD.svg
+│       │   │   ├── Storage-Azure-Files.svg
+│       │   │   ├── Storage-Container.svg
+│       │   │   ├── Storage-Queue.svg
+│       │   │   ├── Subscriptions.svg
+│       │   │   ├── Table.svg
+│       │   │   ├── Tag.svg
+│       │   │   ├── Tags.svg
+│       │   │   ├── Templates.svg
+│       │   │   ├── TFS-VC-Repository.svg
+│       │   │   ├── Toolbox.svg
+│       │   │   ├── Troubleshoot.svg
+│       │   │   ├── Versions.svg
+│       │   │   ├── Web-Slots.svg
+│       │   │   ├── Web-Test.svg
+│       │   │   ├── Website-Power.svg
+│       │   │   ├── Website-Staging.svg
+│       │   │   ├── Workbooks.svg
+│       │   │   └── Workflow.svg
+│       │   ├── security
+│       │   │   ├── Application-Security-Groups.svg
+│       │   │   ├── Azure-Information-Protection.svg
+│       │   │   ├── Azure-Sentinel.svg
+│       │   │   ├── Conditional-Access.svg
+│       │   │   ├── Detonation.svg
+│       │   │   ├── Entra-Identity-Risky-Signins.svg
+│       │   │   ├── Entra-Identity-Risky-Users.svg
+│       │   │   ├── ExtendedSecurityUpdates.svg
+│       │   │   ├── Identity-Secure-Score.svg
+│       │   │   ├── Key-Vaults.svg
+│       │   │   ├── Microsoft-Defender-EASM.svg
+│       │   │   ├── Microsoft-Defender-for-Cloud.svg
+│       │   │   ├── Microsoft-Defender-for-IoT.svg
+│       │   │   ├── Multifactor-Authentication.svg
+│       │   │   └── User-Settings.svg
+│       │   ├── storage
+│       │   │   ├── Azure-Databox-Gateway.svg
+│       │   │   ├── Azure-Fileshares.svg
+│       │   │   ├── Azure-HCP-Cache.svg
+│       │   │   ├── Azure-NetApp-Files.svg
+│       │   │   ├── Azure-Stack-Edge.svg
+│       │   │   ├── Data-Box.svg
+│       │   │   ├── Data-Lake-Storage-Gen1.svg
+│       │   │   ├── Data-Share-Invitations.svg
+│       │   │   ├── Data-Shares.svg
+│       │   │   ├── Import-Export-Jobs.svg
+│       │   │   ├── Managed-File-Shares.svg
+│       │   │   ├── Recovery-Services-Vaults.svg
+│       │   │   ├── Storage-Accounts-(Classic).svg
+│       │   │   ├── Storage-Accounts.svg
+│       │   │   ├── Storage-Actions.svg
+│       │   │   ├── Storage-Explorer.svg
+│       │   │   ├── Storage-Sync-Services.svg
+│       │   │   ├── StorSimple-Data-Managers.svg
+│       │   │   └── StorSimple-Device-Managers.svg
+│       │   └── web
+│       │       ├── API-Center.svg
+│       │       ├── API-Connections.svg
+│       │       ├── API-Management-Services.svg
+│       │       ├── App-Service-Certificates.svg
+│       │       ├── App-Service-Domains.svg
+│       │       ├── App-Service-Environments.svg
+│       │       ├── App-Service-Plans.svg
+│       │       ├── App-Services.svg
+│       │       ├── App-Space-Component.svg
+│       │       ├── App-Space.svg
+│       │       ├── Azure-Media-Service.svg
+│       │       ├── Azure-Spring-Apps.svg
+│       │       ├── Cognitive-Search.svg
+│       │       ├── Cognitive-Services.svg
+│       │       ├── Front-Door-and-CDN-Profiles.svg
+│       │       ├── Notification-Hub-Namespaces.svg
+│       │       ├── Power-Platform.svg
+│       │       ├── SignalR.svg
+│       │       └── Static-Apps.svg
+│       ├── GCP
+│       │   ├── Access-Context-Manager.svg
+│       │   ├── Administration.svg
+│       │   ├── Advanced-Agent-Modeling.svg
+│       │   ├── Advanced-Solutions-Lab.svg
+│       │   ├── Agent-Assist.svg
+│       │   ├── AI-Hub.svg
+│       │   ├── AI-Platform-Unified.svg
+│       │   ├── AI-Platform.svg
+│       │   ├── Analytics-Hub.svg
+│       │   ├── Anthos-Config-Management.svg
+│       │   ├── Anthos-Service-Mesh.svg
+│       │   ├── Anthos.svg
+│       │   ├── API-Analytics.svg
+│       │   ├── API-Monetization.svg
+│       │   ├── API.svg
+│       │   ├── Apigee-API-Platform.svg
+│       │   ├── Apigee-Sense.svg
+│       │   ├── App-Engine.svg
+│       │   ├── Artifact-Registry.svg
+│       │   ├── Asset-Inventory.svg
+│       │   ├── Assured-Workloads.svg
+│       │   ├── AutoML-Natural-Language.svg
+│       │   ├── AutoML-Tables.svg
+│       │   ├── AutoML-Translation.svg
+│       │   ├── AutoML-Video-Intelligence.svg
+│       │   ├── AutoML-Vision.svg
+│       │   ├── AutoML.svg
+│       │   ├── Bare-Metal-Solutions.svg
+│       │   ├── Batch.svg
+│       │   ├── Beyondcorp.svg
+│       │   ├── BigQuery.svg
+│       │   ├── Bigtable.svg
+│       │   ├── Billing.svg
+│       │   ├── Binary-Authorization.svg
+│       │   ├── Catalog.svg
+│       │   ├── Certificate-Authority-Service.svg
+│       │   ├── Certificate-Manager.svg
+│       │   ├── Cloud-API-Gateway.svg
+│       │   ├── Cloud-APIs.svg
+│       │   ├── Cloud-Armor.svg
+│       │   ├── Cloud-Asset-Inventory.svg
+│       │   ├── Cloud-Audit-Logs.svg
+│       │   ├── Cloud-Build.svg
+│       │   ├── Cloud-CDN.svg
+│       │   ├── Cloud-Code.svg
+│       │   ├── Cloud-Composer.svg
+│       │   ├── Cloud-Data-Fusion.svg
+│       │   ├── Cloud-Deploy.svg
+│       │   ├── Cloud-Deployment-Manager.svg
+│       │   ├── Cloud-DNS.svg
+│       │   ├── Cloud-Domains.svg
+│       │   ├── Cloud-EKM.svg
+│       │   ├── Cloud-Endpoints.svg
+│       │   ├── Cloud-External-IP-Addresses.svg
+│       │   ├── Cloud-Firewall-Rules.svg
+│       │   ├── Cloud-For-Marketing.svg
+│       │   ├── Cloud-Functions.svg
+│       │   ├── Cloud-Generic.svg
+│       │   ├── Cloud-GPU.svg
+│       │   ├── Cloud-Healthcare-API.svg
+│       │   ├── Cloud-Healthcare-Marketplace.svg
+│       │   ├── Cloud-HSM.svg
+│       │   ├── Cloud-IDS.svg
+│       │   ├── Cloud-Inference-API.svg
+│       │   ├── Cloud-Interconnect.svg
+│       │   ├── Cloud-Jobs-API.svg
+│       │   ├── Cloud-Load-Balancing.svg
+│       │   ├── Cloud-Logging.svg
+│       │   ├── Cloud-Media-Edge.svg
+│       │   ├── Cloud-Monitoring.svg
+│       │   ├── Cloud-NAT.svg
+│       │   ├── Cloud-Natural-Language-API.svg
+│       │   ├── Cloud-Network.svg
+│       │   ├── Cloud-Ops.svg
+│       │   ├── Cloud-Optimization-AI---Fleet-Routing-API.svg
+│       │   ├── Cloud-Optimization-AI.svg
+│       │   ├── Cloud-Router.svg
+│       │   ├── Cloud-Routes.svg
+│       │   ├── Cloud-Run-For-Anthos.svg
+│       │   ├── Cloud-Run.svg
+│       │   ├── Cloud-Scheduler.svg
+│       │   ├── Cloud-Security-Scanner.svg
+│       │   ├── Cloud-Shell.svg
+│       │   ├── Cloud-Spanner.svg
+│       │   ├── Cloud-SQL.svg
+│       │   ├── Cloud-Storage.svg
+│       │   ├── Cloud-Tasks.svg
+│       │   ├── Cloud-Test-Lab.svg
+│       │   ├── Cloud-TPU.svg
+│       │   ├── Cloud-Translation-API.svg
+│       │   ├── Cloud-Vision-API.svg
+│       │   ├── Cloud-VPN.svg
+│       │   ├── Compute-Engine.svg
+│       │   ├── Configuration-Management.svg
+│       │   ├── Connectivity-Test.svg
+│       │   ├── Connectors.svg
+│       │   ├── Contact-Center-AI.svg
+│       │   ├── Container-Optimized-OS.svg
+│       │   ├── Container-Registry.svg
+│       │   ├── Data-Catalog.svg
+│       │   ├── Data-Labeling.svg
+│       │   ├── Data-Layers.svg
+│       │   ├── Data-Loss-Prevention-API.svg
+│       │   ├── Data-QnA.svg
+│       │   ├── Data-Studio.svg
+│       │   ├── Data-Transfer.svg
+│       │   ├── Database-Migration-Service.svg
+│       │   ├── Dataflow.svg
+│       │   ├── Datalab.svg
+│       │   ├── Dataplex.svg
+│       │   ├── Datapol.svg
+│       │   ├── Dataprep.svg
+│       │   ├── Dataproc-Metastore.svg
+│       │   ├── Dataproc.svg
+│       │   ├── Datashare.svg
+│       │   ├── Datastore.svg
+│       │   ├── Datastream.svg
+│       │   ├── Debugger.svg
+│       │   ├── Developer-Portal.svg
+│       │   ├── Dialogflow-CX.svg
+│       │   ├── Dialogflow-Insights.svg
+│       │   ├── Dialogflow.svg
+│       │   ├── Document-AI.svg
+│       │   ├── Early-Access-Center.svg
+│       │   ├── Error-Reporting.svg
+│       │   ├── Eventarc.svg
+│       │   ├── Filestore.svg
+│       │   ├── Financial-Services-Marketplace.svg
+│       │   ├── Firestore.svg
+│       │   ├── Fleet-Engine.svg
+│       │   ├── Free-Trial.svg
+│       │   ├── Game-Servers.svg
+│       │   ├── GCE-Systems-Management.svg
+│       │   ├── Genomics.svg
+│       │   ├── GKE-On-prem.svg
+│       │   ├── Google-Cloud-Marketplace.svg
+│       │   ├── Google-Kubernetes-Engine.svg
+│       │   ├── Google-Maps-Platform.svg
+│       │   ├── Healthcare-NLP-API.svg
+│       │   ├── Home.svg
+│       │   ├── Identity-And-Access-Management.svg
+│       │   ├── Identity-Aware-Proxy.svg
+│       │   ├── Identity-Platform.svg
+│       │   ├── Iot-Core.svg
+│       │   ├── Iot-Edge.svg
+│       │   ├── Key-Access-Justifications.svg
+│       │   ├── Key-Management-Service.svg
+│       │   ├── Kuberun.svg
+│       │   ├── Launcher.svg
+│       │   ├── Local-SSD.svg
+│       │   ├── Looker.svg
+│       │   ├── Managed-Service-For-Microsoft-Active-Directory.svg
+│       │   ├── Media-Translation-API.svg
+│       │   ├── Memorystore.svg
+│       │   ├── Migrate-For-Anthos.svg
+│       │   ├── Migrate-For-Compute-Engine.svg
+│       │   ├── My-Cloud.svg
+│       │   ├── Network-Connectivity-Center.svg
+│       │   ├── Network-Intelligence-Center.svg
+│       │   ├── Network-Security.svg
+│       │   ├── Network-Tiers.svg
+│       │   ├── Network-Topology.svg
+│       │   ├── Onboarding.svg
+│       │   ├── OS-Configuration-Management.svg
+│       │   ├── OS-Inventory-Management.svg
+│       │   ├── OS-Patch-Management.svg
+│       │   ├── Partner-Interconnect.svg
+│       │   ├── Partner-Portal.svg
+│       │   ├── Performance-Dashboard.svg
+│       │   ├── Permissions.svg
+│       │   ├── Persistent-Disk.svg
+│       │   ├── Phishing-Protection.svg
+│       │   ├── Policy-Analyzer.svg
+│       │   ├── Premium-Network-Tier.svg
+│       │   ├── Private-Connectivity.svg
+│       │   ├── Private-Service-Connect.svg
+│       │   ├── Producer-Portal.svg
+│       │   ├── Profiler.svg
+│       │   ├── Project.svg
+│       │   ├── PubSub.svg
+│       │   ├── Quantum-Engine.svg
+│       │   ├── Quotas.svg
+│       │   ├── Real-world-Insights.svg
+│       │   ├── Recommendations-AI.svg
+│       │   ├── Release-Notes.svg
+│       │   ├── Retail-API.svg
+│       │   ├── Risk-Manager.svg
+│       │   ├── Runtime-Config.svg
+│       │   ├── Secret-Manager.svg
+│       │   ├── Security-Command-Center.svg
+│       │   ├── Security-Health-Advisor.svg
+│       │   ├── Security-Key-Enforcement.svg
+│       │   ├── Security.svg
+│       │   ├── Service-Discovery.svg
+│       │   ├── Speech-To-Text.svg
+│       │   ├── Stackdriver.svg
+│       │   ├── Standard-Network-Tier.svg
+│       │   ├── Stream-Suite.svg
+│       │   ├── Support.svg
+│       │   ├── Tensorflow-Enterprise.svg
+│       │   ├── Text-To-Speech.svg
+│       │   ├── Tools-For-Powershell.svg
+│       │   ├── Trace.svg
+│       │   ├── Traffic-Director.svg
+│       │   ├── Transfer-Appliance.svg
+│       │   ├── Transfer.svg
+│       │   ├── User-Preferences.svg
+│       │   ├── Vertex-AI.svg
+│       │   ├── Video-Intelligence-API.svg
+│       │   ├── Virtual-Private-Cloud.svg
+│       │   ├── Visual-Inspection.svg
+│       │   ├── VMware-Engine.svg
+│       │   ├── Web-Risk.svg
+│       │   ├── Web-Security-Scanner.svg
+│       │   ├── Workflows.svg
+│       │   └── Workload-Identity-Pool.svg
+│       ├── General
+│       │   ├── Alert_48_Light.svg
+│       │   ├── Authenticated-User_48_Light.svg
+│       │   ├── AWS-Management-Console_48_Light.svg
+│       │   ├── Camera_48_Light.svg
+│       │   ├── Chat_48_Light.svg
+│       │   ├── Client_48_Light.svg
+│       │   ├── Cold-Storage_48_Light.svg
+│       │   ├── Credentials_48_Light.svg
+│       │   ├── Data-Stream_48_Light.svg
+│       │   ├── Data-Table_48_Light.svg
+│       │   ├── Database_48_Light.svg
+│       │   ├── Disk_48_Light.svg
+│       │   ├── Document_48_Light.svg
+│       │   ├── Documents_48_Light.svg
+│       │   ├── Email_48_Light.svg
+│       │   ├── Error-Rate-Alarm.svg
+│       │   ├── Firewall_48_Light.svg
+│       │   ├── Folder_48_Light.svg
+│       │   ├── Folders_48_Light.svg
+│       │   ├── Forums_48_Light.svg
+│       │   ├── Gear_48_Light.svg
+│       │   ├── Generic-Application_48_Light.svg
+│       │   ├── Git-Repository_48_Light.svg
+│       │   ├── GitHub.svg
+│       │   ├── Globe_48_Light.svg
+│       │   ├── High-CPU-Alarm.svg
+│       │   ├── Internet_48_Light.svg
+│       │   ├── Internet-alt1_48_Light.svg
+│       │   ├── Internet-alt2_48_Light.svg
+│       │   ├── JSON-Script_48_Light.svg
+│       │   ├── Logs_48_Light.svg
+│       │   ├── Magnifying-Glass_48_Light.svg
+│       │   ├── Metrics_48_Light.svg
+│       │   ├── Mobile-client_48_Light.svg
+│       │   ├── Multimedia_48_Light.svg
+│       │   ├── Office-building_48_Light.svg
+│       │   ├── Programming-Language_48_Light.svg
+│       │   ├── Question_48_Light.svg
+│       │   ├── Recover_48_Light.svg
+│       │   ├── SAML-token_48_Light.svg
+│       │   ├── SDK_48_Light.svg
+│       │   ├── Server_48_Light.svg
+│       │   ├── Servers_48_Light.svg
+│       │   ├── Shield_48_Light.svg
+│       │   ├── Source-Code_48_Light.svg
+│       │   ├── SSL-padlock_48_Light.svg
+│       │   ├── Tape-storage_48_Light.svg
+│       │   ├── Toolkit_48_Light.svg
+│       │   ├── User_48_Light.svg
+│       │   └── Users_48_Light.svg
+│       ├── Kubernetes
+│       │   ├── api.svg
+│       │   ├── c-c-m.svg
+│       │   ├── c-m.svg
+│       │   ├── c-role.svg
+│       │   ├── cm.svg
+│       │   ├── control-plane.svg
+│       │   ├── crb.svg
+│       │   ├── crd.svg
+│       │   ├── cronjob.svg
+│       │   ├── deploy.svg
+│       │   ├── ds.svg
+│       │   ├── ep.svg
+│       │   ├── etcd.svg
+│       │   ├── group.svg
+│       │   ├── hpa.svg
+│       │   ├── ing.svg
+│       │   ├── job.svg
+│       │   ├── k-proxy.svg
+│       │   ├── kubelet.svg
+│       │   ├── limits.svg
+│       │   ├── netpol.svg
+│       │   ├── node.svg
+│       │   ├── ns.svg
+│       │   ├── pod.svg
+│       │   ├── psp.svg
+│       │   ├── pv.svg
+│       │   ├── pvc.svg
+│       │   ├── quota.svg
+│       │   ├── rb.svg
+│       │   ├── role.svg
+│       │   ├── rs.svg
+│       │   ├── sa.svg
+│       │   ├── sc.svg
+│       │   ├── sched.svg
+│       │   ├── secret.svg
+│       │   ├── sts.svg
+│       │   ├── svc.svg
+│       │   ├── user.svg
+│       │   └── vol.svg
+│       └── Monitoring
+│           ├── Activity-Log.svg
+│           ├── Application-Insights.svg
+│           ├── Auto-Scale.svg
+│           ├── Az-Monitor.svg
+│           ├── azure-monitor.svg
+│           ├── Azure-Monitors-for-SAP-Solutions.svg
+│           ├── Azure-Workbooks.svg
+│           ├── Change-Analysis.svg
+│           ├── CloudWatch.svg
+│           ├── datadog.svg
+│           ├── Diagnostics-Settings.svg
+│           ├── elastic.svg
+│           ├── fluentbit.svg
+│           ├── gc-monitor.svg
+│           ├── grafana.svg
+│           ├── kibana.svg
+│           ├── Log-Analytics-Workspaces.svg
+│           ├── Metrics.svg
+│           ├── Network-Watcher.svg
+│           ├── prometheus.svg
+│           ├── splunk.svg
+│           └── zabbix.svg
+├── README.md
+└── tree.txt
+
+64 directories, 1349 files
