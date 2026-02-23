@@ -31,23 +31,7 @@ function extractProviderIcons(treeContent, provider, projectRoot) {
     }
     
     if (inProviderSection) {
-      // Check for direct icon (no category) - for flat providers like Kubernetes/Monitoring
-      // Pattern: "│       │   ├── api.svg" or "│           ├── prometheus.svg"
-      const directIconMatch = line.match(/│\s+│?\s+[├└]── (.+\.svg)\s*$/);
-      if (directIconMatch) {
-        const iconFile = directIconMatch[1].trim();
-        // For flat providers, use 'General-Icons' or provider name as category
-        const categoryName = currentCategory || 'General-Icons';
-        icons.push({
-          provider: provider,
-          category: categoryName,
-          filename: iconFile,
-          fullPath: `assets/icons/${provider}/${iconFile}`
-        });
-        continue;
-      }
-      
-      // Check if this is a category-based icon (3 levels deep): "│       │   │   ├── Athena.svg"
+      // Check if this is a category-based icon (3 pipes = nested structure): "│   │   │   ├── Athena.svg"
       const deepIconMatch = line.match(/│\s+│\s+│\s+[├└]── (.+\.svg)\s*$/);
       if (deepIconMatch && currentCategory) {
         const iconFile = deepIconMatch[1].trim();
@@ -56,6 +40,20 @@ function extractProviderIcons(treeContent, provider, projectRoot) {
           category: currentCategory,
           filename: iconFile,
           fullPath: `assets/icons/${provider}/${currentCategory}/${iconFile}`
+        });
+        continue;
+      }
+      
+      // Check for flat icon (no category) - ONLY 2 pipes: "│   │   ├── api.svg" (Kubernetes/Monitoring)
+      const flatIconMatch = line.match(/^│\s+│\s+[├└]── (.+\.svg)\s*$/);
+      if (flatIconMatch) {
+        const iconFile = flatIconMatch[1].trim();
+        const categoryName = currentCategory || 'General-Icons';
+        icons.push({
+          provider: provider,
+          category: categoryName,
+          filename: iconFile,
+          fullPath: `assets/icons/${provider}/${iconFile}`
         });
         continue;
       }
@@ -147,47 +145,45 @@ function detectProviders(markdown, explicitProviders = []) {
   return detectedProviders;
 }
 
-// AI PROMPT GENERATOR
+// AI PROMPT GENERATOR - ULTRA SIMPLIFIED
 function generateDiagramPrompt(markdown, detectedProviders, iconPathList) {
+  // Load icon database for strict reference
+  const iconDb = require('./icon-database.json');
+  const totalIcons = Object.keys(iconDb).length;
+  
   return `You are a cloud architecture diagram generator. Generate a JSON diagram from the markdown below.
 
 DETECTED TECHNOLOGIES: ${detectedProviders.join(', ')}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-⛔️ ABSOLUTE RULES - BREAKING THESE CAUSES SYSTEM FAILURE ⛔️
+🔥 ICON DATABASE RULE - READ THIS CAREFULLY 🔥
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-🔥 CRITICAL: EVERY icon path MUST be COPIED EXACTLY from the list below
-🔥 DO NOT create ANY path that doesn't exist in the list
-🔥 DO NOT shorten, modify, or simplify ANY filename
-🔥 DO NOT remove category folders from paths
-🔥 DO NOT use lowercase provider names (AWS not aws)
-🔥 CTRL+C CTRL+V THE EXACT PATH - NO TYPING, NO GUESSING
+There is a file called "icon-database.json" with ${totalIcons} available icons.
+This database contains the ONLY valid icon paths in the system.
 
-AVAILABLE ICONS (COPY THESE EXACT PATHS):
-${iconPathList}
+FOR EACH SERVICE IN THE DIAGRAM:
+1. Think of search keywords (e.g., "s3", "eks", "kubernetes", "database")
+2. Search icon-database.json using normalized names (lowercase, no special chars)
+3. USE THE EXACT PATH from the database's "exactPath" field
+4. DO NOT make up paths - if no match found, use a generic icon
+
+EXAMPLES OF CORRECT ICON USAGE:
+- For "S3" search: "s3bucket" → use: "assets/icons/AWS/Storage/S3-bucket.svg"
+- For "RDS" search: "rds" → use: "assets/icons/AWS/Database/RDS.svg"
+- For "EKS" search: "ekscloud" → use: "assets/icons/AWS/Containers/EKS-Cloud.svg"
+- For "Redis" search: "redis" or "cacheredis" → use exact path from database
+
+🚫 NEVER DO THIS:
+- ❌ "Amazon-S3.svg" (doesn't exist - MUST use "assets/icons/AWS/Storage/S3-bucket.svg")
+- ❌ "Amazon-EKS.svg" (doesn't exist - MUST use "assets/icons/AWS/Containers/EKS-Cloud.svg")
+- ❌ "React-SPA.svg" (doesn't exist - use "assets/icons/General/react.svg" if available)
+- ❌ ANY path not in icon-database.json
+
+If you cannot find an icon, use a generic one from the database.
+EVERY ICON PATH MUST MATCH AN "exactPath" FROM ICON-DATABASE.JSON
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-✅ CORRECT PATH PATTERN:
-- "icon": "assets/icons/[Provider]/[Category]/[Complete-Filename-With-All-Words].svg"
-- ALWAYS include the category folder (3rd level)
-- ALWAYS use FULL filename as shown in the list above
-- ALWAYS match exact case (Provider starts with Capital)
-
-🚫 FORBIDDEN PATTERNS (these cause 404 errors):
-- ❌ Shortened filenames: "Service.svg" instead of "Service-Full-Name.svg"
-- ❌ Missing category: "assets/icons/Provider/File.svg" (missing category folder)
-- ❌ Wrong case: "assets/icons/provider/category/file.svg" (must match exact case)
-- ❌ Made-up paths: typing instead of copy-pasting from the list above
-
-⚠️ CRITICAL: Many services have FULL names with hyphens or multiple words
-Example patterns you MUST follow:
-- Storage services often have suffixes: "Service-bucket.svg", "Service-storage.svg"
-- Networking often has full descriptions: "Service-load-balancer.svg", "Service-and-CDN.svg"
-- NEVER shorten these - use the COMPLETE filename from the list
-
-Position nodes with 250-350px spacing. All edges use "orthogonal" type.
 
 MARKDOWN INPUT:
 ${markdown}
@@ -197,8 +193,8 @@ OUTPUT JSON FORMAT:
   "nodes": [
     {
       "id": "unique-id",
-      "label": "Service Display Name",
-      "icon": "assets/icons/Provider/category/Exact-Icon-Filename.svg",
+      "label": "Service Name",
+      "icon": "EXACT_PATH_FROM_DATABASE",
       "type": "service",
       "position": {"x": 100, "y": 100}
     }
@@ -207,67 +203,53 @@ OUTPUT JSON FORMAT:
     {
       "id": "edge-id",
       "source": "source-id",
-      "target": "target-id", 
-      "label": "connection type",
+      "target": "target-id",
+      "label": "connection",
       "type": "orthogonal"
     }
   ],
   "metadata": {
-    "title": "Architecture Diagram Title",
-    "description": "Brief description",
+    "title": "Diagram Title",
+    "description": "Description",
     "technologies": "${detectedProviders.join(', ')}"
   }
 }
 
-IMPORTANT: Return ONLY valid JSON. No explanations, no markdown code blocks, just the JSON object.
-
-Generate now:`;
+Return ONLY valid JSON. No markdown, no explanations.`;
 }
 
-// PRE-VALIDATION: Check if AI generated any fake common paths
+// PRE-VALIDATION: Check if ALL paths exist in icon-database.json
 function checkForCommonFakePaths(diagram) {
   if (!diagram.nodes || !Array.isArray(diagram.nodes)) {
     return { valid: true, errors: [] };
   }
 
-  const knownFakePaths = [
-    'S3.svg',
-    'RDS.svg', 
-    'EC2.svg',
-    'EKS.svg',
-    'Lambda.svg',
-    'DynamoDB.svg',
-    'CloudFront.svg',
-    'Route53.svg',
-    'VPC.svg',
-    'IAM.svg',
-    'Redis.svg',
-    'CosmosDB.svg',
-    'AKS.svg'
-  ];
+  // Load icon database
+  const iconDatabase = require('./icon-database.json');
+  const validPaths = new Set();
+  
+  for (const iconArray of Object.values(iconDatabase)) {
+    iconArray.forEach(icon => {
+      validPaths.add(icon.exactPath.toLowerCase());
+    });
+  }
 
   const errors = [];
   
   diagram.nodes.forEach((node, idx) => {
     if (!node.icon) return;
     
-    const filename = node.icon.split('/').pop();
+    const lowerPath = node.icon.toLowerCase();
     
-    // Check if it's a known fake shortened name
-    if (knownFakePaths.includes(filename)) {
-      errors.push(`Node ${idx} (${node.label || 'unnamed'}): Uses fake shortened filename "${filename}"`);
-    }
-    
-    // Check if path is too short (likely missing category)
-    const pathParts = node.icon.split('/');
-    if (pathParts.length < 4) { // Should be: assets/icons/Provider/Category/File.svg
-      errors.push(`Node ${idx} (${node.label || 'unnamed'}): Path too short, missing category folder: "${node.icon}"`);
+    // Check if path exists in database
+    if (!validPaths.has(lowerPath)) {
+      errors.push(`Node ${idx} (${node.label || 'unnamed'}): Path not in icon database: "${node.icon}"`);
     }
   });
 
   if (errors.length > 0) {
     console.error('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-    console.error('⛔️ AI GENERATED FAKE PATHS - REJECTED');
+    console.error('⛔️ PATHS NOT IN ICON DATABASE');
     console.error('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
     errors.forEach(err => console.error(`  ❌ ${err}`));
     console.error('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
@@ -279,124 +261,123 @@ function checkForCommonFakePaths(diagram) {
   };
 }
 
-// AGGRESSIVE PATH VALIDATOR: Checks filesystem and forces corrections
+// STRICT PATH VALIDATOR: Uses icon-database.json as source of truth
 function validateAndFixPaths(diagram, providerIcons, projectRoot) {
   if (!diagram.nodes || !Array.isArray(diagram.nodes)) {
     return diagram;
   }
 
-  // Build comprehensive icon map with ALL possible matches
-  const iconMap = new Map();
-  const pathMap = new Map(); // fullPath -> icon object
+  // Load icon database - THIS IS THE ONLY SOURCE OF TRUTH
+  const iconDatabase = require('./icon-database.json');
   
-  providerIcons.forEach(icon => {
-    const fullPath = icon.fullPath || `assets/icons/${icon.provider}/${icon.category}/${icon.filename}`;
-    
-    // Store by full path
-    pathMap.set(fullPath.toLowerCase(), fullPath);
-    
-    // Store by filename
-    iconMap.set(icon.filename.toLowerCase(), fullPath);
-    
-    // Store by filename without extension
-    const nameWithoutExt = icon.filename.replace('.svg', '').toLowerCase();
-    iconMap.set(nameWithoutExt, fullPath);
-    
-    // Store by just the icon name (for aggressive matching)
-    const iconName = icon.filename.replace('.svg', '').toLowerCase().replace(/[^a-z0-9]/g, '');
-    iconMap.set(iconName, fullPath);
-  });
+  // Build reverse lookup: exactPath -> icon entry
+  const pathLookup = new Map();
+  const searchLookup = new Map(); // normalized name -> exactPath
+  
+  for (const [normalizedKey, iconArray] of Object.entries(iconDatabase)) {
+    iconArray.forEach(icon => {
+      pathLookup.set(icon.exactPath.toLowerCase(), icon.exactPath);
+      searchLookup.set(normalizedKey, icon.exactPath);
+      
+      // Also index by filename variations
+      const filename = icon.filename.replace('.svg', '').toLowerCase();
+      const filenameNormalized = filename.replace(/[^a-z0-9]/g, '');
+      if (!searchLookup.has(filenameNormalized)) {
+        searchLookup.set(filenameNormalized, icon.exactPath);
+      }
+    });
+  }
 
-  console.log(`[Path Validator] Built icon map with ${iconMap.size} entries`);
+  console.log(`[JSON Validator] Loaded ${pathLookup.size} icon paths from database`);
 
-  // Validate and fix each node
   let fixedCount = 0;
   let invalidCount = 0;
   
-  diagram.nodes.forEach(node => {
+  diagram.nodes.forEach((node, idx) => {
     if (!node.icon) return;
     
     const originalPath = node.icon;
-    
-    // Check if path exists on filesystem
-    const filePath = path.join(projectRoot, node.icon);
-    const exists = fs.existsSync(filePath);
-    
-    if (exists) {
-      console.log(`[Path Validator] ✓ Valid: ${node.icon}`);
-      return; // Path is good
-    }
-    
-    // Path doesn't exist - FORCE correction
-    invalidCount++;
-    console.warn(`[Path Validator] ✗ INVALID: ${originalPath}`);
-    
-    // Try exact path match first (case-insensitive)
     const lowerPath = originalPath.toLowerCase();
-    if (pathMap.has(lowerPath)) {
-      node.icon = pathMap.get(lowerPath);
-      console.log(`[Path Validator] → Fixed (case): ${node.icon}`);
-      fixedCount++;
+    
+    // Check if path exists in database (exact match)
+    if (pathLookup.has(lowerPath)) {
+      const correctPath = pathLookup.get(lowerPath);
+      if (correctPath !== originalPath) {
+        node.icon = correctPath;
+        console.log(`[JSON Validator] Fixed case: ${originalPath} → ${correctPath}`);
+        fixedCount++;
+      } else {
+        console.log(`[JSON Validator] ✓ Valid: ${originalPath}`);
+      }
       return;
     }
     
-    // Extract filename and find match
+    // Path not in database - try to fix
+    invalidCount++;
+    console.error(`[JSON Validator] ✗ INVALID (not in database): ${originalPath}`);
+    
+    // Extract what the AI was trying to reference
     const filename = originalPath.split('/').pop();
-    const normalized = filename.replace('.svg', '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    let normalized = filename.replace('.svg', '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    
+    // Remove common prefixes that AI adds
+    normalized = normalized.replace(/^amazon/, '').replace(/^aws/, '').replace(/^azure/, '').replace(/^google/, '').replace(/^gcp/, '');
     
     // Try exact normalized match
-    if (iconMap.has(normalized)) {
-      node.icon = iconMap.get(normalized);
-      console.log(`[Path Validator] → Fixed (exact): ${node.icon}`);
+    if (searchLookup.has(normalized)) {
+      node.icon = searchLookup.get(normalized);
+      console.log(`[JSON Validator] → Fixed (exact): ${node.icon}`);
       fixedCount++;
       return;
     }
     
-    // Try prefix match: "s3" should match "s3bucket", "s3onoutposts"
-    let bestPrefixMatch = null;
-    let bestPrefixScore = 0;
+    // Try prefix/substring match
+    let bestMatch = null;
+    let bestScore = 0;
     
-    for (const [key, fullPath] of iconMap.entries()) {
-      const keyNormalized = key.replace('.svg', '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    for (const [key, exactPath] of searchLookup.entries()) {
+      let score = 0;
       
-      // If AI name is a prefix of our icon name (s3 -> s3bucket)
-      if (keyNormalized.startsWith(normalized) && normalized.length >= 2) {
-        const score = normalized.length / keyNormalized.length * 100;
-        if (score > bestPrefixScore) {
-          bestPrefixScore = score;
-          bestPrefixMatch = fullPath;
-        }
+      // Exact match gets priority
+      if (key === normalized) {
+        score = 200;
+      }
+      // Prefix match: "s3" matches "s3bucket"
+      else if (key.startsWith(normalized) && normalized.length >= 2) {
+        score = (normalized.length / key.length) * 150;
+      } else if (normalized.startsWith(key) && key.length >= 2) {
+        score = (key.length / normalized.length) * 150;
+      }
+      // Contains match
+      else if (key.includes(normalized) && normalized.length >= 3) {
+        score = (normalized.length / key.length) * 100;
+      } else if (normalized.includes(key) && key.length >= 3) {
+        score = (key.length / normalized.length) * 100;
       }
       
-      // If our icon name is a prefix of AI name (rare but possible)
-      if (normalized.startsWith(keyNormalized) && keyNormalized.length >= 2) {
-        const score = keyNormalized.length / normalized.length * 100;
-        if (score > bestPrefixScore) {
-          bestPrefixScore = score;
-          bestPrefixMatch = fullPath;
-        }
+      if (score > bestScore && score > 30) {
+        bestScore = score;
+        bestMatch = exactPath;
       }
     }
     
-    if (bestPrefixMatch && bestPrefixScore > 20) {
-      node.icon = bestPrefixMatch;
-      console.log(`[Path Validator] → Fixed (prefix): ${node.icon} (score: ${bestPrefixScore.toFixed(0)})`);
-      fixedCount++;
-      return;
-    }
-    
-    // Last resort: fuzzy match
-    const corrected = findCorrectIconPath(originalPath, iconMap);
-    if (corrected && corrected !== originalPath) {
-      node.icon = corrected;
-      console.log(`[Path Validator] → Fixed (fuzzy): ${node.icon}`);
+    if (bestMatch) {
+      node.icon = bestMatch;
+      console.log(`[JSON Validator] → Fixed (fuzzy): ${node.icon} (score: ${bestScore.toFixed(0)})`);
       fixedCount++;
     } else {
-      console.error(`[Path Validator] → NO MATCH FOUND for: ${originalPath}`);
+      console.error(`[JSON Validator] → NO MATCH IN DATABASE for: ${originalPath}`);
+      // Try to find ANY generic icon as ultimate fallback
+      const genericIcon = Array.from(pathLookup.values()).find(p => p.includes('/General/'));
+      if (genericIcon) {
+        node.icon = genericIcon;
+        console.log(`[JSON Validator] → Using generic fallback: ${genericIcon}`);
+        fixedCount++;
+      }
     }
   });
   
-  console.log(`[Path Validator] Summary: ${invalidCount} invalid paths, ${fixedCount} fixed`);
+  console.log(`[JSON Validator] Summary: ${invalidCount} invalid, ${fixedCount} fixed`);
   
   return diagram;
 }
