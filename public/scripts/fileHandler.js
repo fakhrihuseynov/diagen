@@ -134,7 +134,7 @@ export class FileHandler {
                         {
                             id: 's3',
                             label: 'S3 Bucket',
-                            icon: 'assets/icons/AWS/Storage/S3.svg',
+                            icon: 'assets/icons/AWS/Storage/Simple-Storage-Service.svg',
                             type: 'storage',
                             position: { x: baseX + spacing * 2, y: baseY }
                         }
