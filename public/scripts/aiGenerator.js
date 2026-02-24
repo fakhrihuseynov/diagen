@@ -101,24 +101,21 @@ export class AIGenerator {
 
     displayMarkdownPreview(content) {
         const preview = document.getElementById('markdown-preview');
-        preview.innerHTML = '';
         
-        // Simple markdown-like preview
-        const lines = content.split('\n');
-        lines.forEach(line => {
-            const p = document.createElement('p');
-            
-            if (line.startsWith('#')) {
-                p.style.fontWeight = 'bold';
-                p.style.fontSize = '1.1em';
-                p.style.marginTop = '1em';
-            } else if (line.startsWith('-') || line.startsWith('*')) {
-                p.style.paddingLeft = '1em';
-            }
-            
-            p.textContent = line;
-            preview.appendChild(p);
-        });
+        // Check if marked library is available
+        if (typeof marked !== 'undefined') {
+            // Use marked.js for proper markdown rendering
+            preview.innerHTML = marked.parse(content);
+        } else {
+            // Fallback: simple text display
+            preview.innerHTML = '<pre>' + this.escapeHtml(content) + '</pre>';
+        }
+    }
+    
+    escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
     }
 
     async generateDiagram() {
