@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DIAGEN - AI Architecture Diagram Generator</title>
     <link rel="stylesheet" href="styles/main.css">
+    <!-- Marked.js for markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
     <!-- Header Navigation -->
@@ -75,19 +77,19 @@
                     <p>Explore sample architecture diagrams</p>
                     <div class="examples-list">
                         <div class="example-item" data-example="aws">
-                            <span class="example-icon">☁️</span>
+                            <img src="assets/aws.png" alt="AWS" class="example-icon">
                             <span>AWS Example Blueprint</span>
                         </div>
                         <div class="example-item" data-example="azure">
-                            <span class="example-icon">☁️</span>
+                            <img src="assets/azure.png" alt="Azure" class="example-icon">
                             <span>Azure Example Blueprint</span>
                         </div>
                         <div class="example-item" data-example="gcp">
-                            <span class="example-icon">☁️</span>
+                            <img src="assets/gcp.png" alt="GCP" class="example-icon">
                             <span>GCP Example Blueprint</span>
                         </div>
                         <div class="example-item" data-example="kubernetes">
-                            <span class="example-icon">⎈</span>
+                            <img src="assets/kubernetes.png" alt="Kubernetes" class="example-icon">
                             <span>Kubernetes Example</span>
                         </div>
                     </div>
@@ -191,11 +193,22 @@
                     <button class="btn btn-primary" id="export-png-btn">Export as PNG</button>
                 </div>
             </div>
+            <div id="diagram-name-display" class="diagram-name" style="display: none;">
+                Untitled Diagram
+            </div>
             <div class="canvas-container">
                 <canvas id="diagram-canvas" width="1600" height="1000"></canvas>
+                <div class="edit-controls">
+                    <button class="edit-btn" id="add-node-btn" title="Add New Node">+ Node</button>
+                </div>
+                <div class="zoom-controls">
+                    <button class="zoom-btn" id="zoom-in-btn" title="Zoom In">+</button>
+                    <button class="zoom-btn" id="zoom-out-btn" title="Zoom Out">−</button>
+                    <button class="zoom-btn" id="zoom-fit-btn" title="Fit to Canvas">⊡</button>
+                </div>
             </div>
             <div class="canvas-info">
-                <p>Click and drag elements to reposition • Use mouse wheel to zoom • Right-click elements for options</p>
+                <p>Click connector dots on nodes to create connections • Click "+ Node" to add new nodes • Double-click icons to change them • Drag nodes to reposition • Right-click or Space+drag to pan • Mouse wheel to zoom</p>
             </div>
         </section>
 
@@ -275,6 +288,31 @@
     <div id="loading-overlay" class="loading-overlay">
         <div class="spinner"></div>
         <p>Processing...</p>
+    </div>
+
+    <!-- Icon Search Modal -->
+    <div id="icon-search-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Select Icon</h3>
+                <button class="modal-close" id="close-icon-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="icon-search-controls">
+                    <input type="text" id="icon-search-input" class="form-control" placeholder="Search icons... (e.g., S3, Lambda, Storage)">
+                    <div class="icon-filter-tabs">
+                        <button class="filter-tab active" data-filter="all">All</button>
+                        <button class="filter-tab" data-filter="AWS">AWS</button>
+                        <button class="filter-tab" data-filter="Azure">Azure</button>
+                        <button class="filter-tab" data-filter="GCP">GCP</button>
+                        <button class="filter-tab" data-filter="Kubernetes">Kubernetes</button>
+                    </div>
+                </div>
+                <div id="icon-grid" class="icon-grid">
+                    <div class="icon-grid-loading">Loading icons...</div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Scripts -->

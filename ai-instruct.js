@@ -156,37 +156,42 @@ function generateDiagramPrompt(markdown, detectedProviders, iconPathList) {
 DETECTED TECHNOLOGIES: ${detectedProviders.join(', ')}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🔥 ICON DATABASE RULE - READ THIS CAREFULLY 🔥
+🔥 AVAILABLE ICONS - USE THESE EXACT PATHS 🔥
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-There is a file called "icon-database.json" with ${totalIcons} available icons.
-This database contains the ONLY valid icon paths in the system.
+Below is the COMPLETE list of available icons. You MUST use these EXACT paths.
+DO NOT make up icon paths - only use paths from this list.
 
-FOR EACH SERVICE IN THE DIAGRAM:
-1. Think of search keywords (e.g., "s3", "eks", "kubernetes", "database")
-2. Search icon-database.json using normalized names (lowercase, no special chars)
-3. USE THE EXACT PATH from the database's "exactPath" field
-4. DO NOT make up paths - if no match found, use a generic icon
+${iconPathList}
 
-EXAMPLES OF CORRECT ICON USAGE:
-- For "S3" search: "s3bucket" → use: "assets/icons/AWS/Storage/S3-bucket.svg"
-- For "RDS" search: "rds" → use: "assets/icons/AWS/Database/RDS.svg"
-- For "EKS" search: "ekscloud" → use: "assets/icons/AWS/Containers/EKS-Cloud.svg"
-- For "Redis" search: "redis" or "cacheredis" → use exact path from database
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🔥 ICON SELECTION RULES 🔥
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-🚫 NEVER DO THIS:
-- ❌ "Amazon-S3.svg" (doesn't exist - MUST use "assets/icons/AWS/Storage/S3-bucket.svg")
-- ❌ "Amazon-EKS.svg" (doesn't exist - MUST use "assets/icons/AWS/Containers/EKS-Cloud.svg")
-- ❌ "React-SPA.svg" (doesn't exist - use "assets/icons/General/react.svg" if available)
-- ❌ ANY path not in icon-database.json
+FOR EACH SERVICE:
+1. Look for keywords in the service name (e.g., "blob", "storage", "database")
+2. Find matching icon from the list above
+3. Copy the EXACT path shown
 
-If you cannot find an icon, use a generic one from the database.
-EVERY ICON PATH MUST MATCH AN "exactPath" FROM ICON-DATABASE.JSON
+EXAMPLES:
+- "Azure Blob Storage" → search for "storage" or "blob" → use: "assets/icons/Azure/storage/Storage-Accounts.svg"
+- "S3" → search for "s3" → use: "assets/icons/AWS/Storage/S3-bucket.svg" 
+- "EKS" → search for "eks" → use: "assets/icons/AWS/Containers/EKS-Cloud.svg"
+- "PostgreSQL" → search for "postgres" → use matching postgres icon from list
+
+🚫 NEVER CREATE PATHS - ONLY USE PATHS FROM THE LIST ABOVE!
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 MARKDOWN INPUT:
 ${markdown}
+
+LAYOUT REQUIREMENTS:
+- Space nodes at least 250-300 pixels apart horizontally
+- Space nodes at least 200-250 pixels apart vertically
+- Use wider spacing for better readability
+- Example positions: {"x": 200, "y": 200}, {"x": 500, "y": 200}, {"x": 800, "y": 200}
+- Avoid clustering nodes too close together
 
 OUTPUT JSON FORMAT:
 {
@@ -196,7 +201,7 @@ OUTPUT JSON FORMAT:
       "label": "Service Name",
       "icon": "EXACT_PATH_FROM_DATABASE",
       "type": "service",
-      "position": {"x": 100, "y": 100}
+      "position": {"x": 200, "y": 200}
     }
   ],
   "edges": [
