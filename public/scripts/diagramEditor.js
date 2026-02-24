@@ -75,7 +75,10 @@ export class DiagramEditor {
         if (e.code === 'Space' && !this.spacePressed) {
             this.spacePressed = true;
             this.canvas.style.cursor = 'grab';
-            e.preventDefault();
+            // Prevent default scroll behavior that causes drift
+            if (document.activeElement === document.body || document.activeElement === this.canvas) {
+                e.preventDefault();
+            }
         }
     }
 
