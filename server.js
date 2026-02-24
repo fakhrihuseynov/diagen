@@ -72,6 +72,11 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
+// Serve icon database
+app.get('/icon-database.json', (req, res) => {
+  res.sendFile(path.join(__dirname, 'icon-database.json'));
+});
+
 // Check Ollama connection and list models
 app.get('/api/ollama/models', async (req, res) => {
   try {

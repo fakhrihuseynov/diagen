@@ -4,6 +4,8 @@
  * Enhanced with pan/zoom, auto-fit, and visual grouping
  */
 
+import { IconSearchModal } from './iconSearch.js';
+
 export class DiagramEditor {
     constructor(canvasId) {
         this.canvas = document.getElementById(canvasId);
@@ -25,6 +27,14 @@ export class DiagramEditor {
         
         this.gridSize = 20;
         this.iconCache = new Map();
+        
+        // Icon search modal
+        this.iconSearchModal = new IconSearchModal();
+        
+        // Double-click detection for icon replacement
+        this.lastClickTime = 0;
+        this.lastClickedNode = null;
+        this.doubleClickDelay = 300; // ms
         
         // Setup high-DPI canvas
         this.setupHighDPICanvas();
@@ -68,6 +78,9 @@ export class DiagramEditor {
         window.addEventListener('keyup', this.onKeyUp.bind(this));
         
         this.spacePressed = false;
+        
+        // Zoom control buttons
+        this.setupZoomControls();
     }
 
     onKeyDown(e) {
@@ -87,6 +100,56 @@ export class DiagramEditor {
             this.isPanning = false;
             this.canvas.style.cursor = 'default';
         }
+    }
+
+    setupZoomControls() {
+        const zoomInBtn = document.getElementById('zoom-in-btn');
+        const zoomOutBtn = document.getElementById('zoom-out-btn');
+        const zoomFitBtn = document.getElementById('zoom-fit-btn');
+        
+        if (zoomInBtn) zoomInBtn.addEventListener('click', () => this.zoomIn());
+        if (zoomOutBtn) zoomOutBtn.addEventListener('click', () => this.zoomOut());
+        if (zoomFitBtn) zoomFitBtn.addEventListener('click', () => this.fitDiagramToCanvas());
+    }
+
+    zoomIn() {
+        const rect = this.canvas.getBoundingClientRect();
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        // Get world position at center
+        const worldX = centerX / this.scale - this.panOffset.x;
+        const worldY = centerY / this.scale - this.panOffset.y;
+        
+        // Apply zoom
+        const newScale = Math.min(2, this.scale + 0.2);
+        
+        // Adjust pan to keep center point stable
+        this.panOffset.x = centerX / newScale - worldX;
+        this.panOffset.y = centerY / newScale - worldY;
+        
+        this.scale = newScale;
+        this.render();
+    }
+
+    zoomOut() {
+        const rect = this.canvas.getBoundingClientRect();
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        // Get world position at center
+        const worldX = centerX / this.scale - this.panOffset.x;
+        const worldY = centerY / this.scale - this.panOffset.y;
+        
+        // Apply zoom
+        const newScale = Math.max(0.5, this.scale - 0.2);
+        
+        // Adjust pan to keep center point stable
+        this.panOffset.x = centerX / newScale - worldX;
+        this.panOffset.y = centerY / newScale - worldY;
+        
+        this.scale = newScale;
+        this.render();
     }
 
     onMouseDown(e) {
@@ -114,6 +177,25 @@ export class DiagramEditor {
         const clickedNode = this.getNodeAt(x, y);
         
         if (clickedNode) {
+            // Detect double-click for icon replacement
+            const currentTime = Date.now();
+            const isDoubleClick = 
+                this.lastClickedNode === clickedNode && 
+                (currentTime - this.lastClickTime) < this.doubleClickDelay;
+            
+            if (isDoubleClick) {
+                // Open icon search modal
+                this.openIconSearchModal(clickedNode);
+                this.lastClickedNode = null;
+                this.lastClickTime = 0;
+                return;
+            }
+            
+            // Update click tracking
+            this.lastClickedNode = clickedNode;
+            this.lastClickTime = currentTime;
+            
+            // Start dragging
             this.selectedNode = clickedNode;
             this.isDragging = true;
             this.dragOffset = {
@@ -121,6 +203,22 @@ export class DiagramEditor {
                 y: y - clickedNode.position.y
             };
         }
+    }
+
+    openIconSearchModal(node) {
+        this.iconSearchModal.open(node, (selectedNode, newIconPath) => {
+            // Replace the icon
+            selectedNode.icon = newIconPath;
+            
+            // Preload the new icon
+            this.preloadIcon(newIconPath);
+            
+            // Re-render
+            this.render();
+            
+            console.log(`Icon changed for "${selectedNode.label}" to ${newIconPath}`);
+            window.showToast(`Icon updated for "${selectedNode.label}"`, 'success');
+        });
     }
 
     onMouseMove(e) {
