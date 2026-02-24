@@ -5495,7 +5495,8 @@
         "kubernetes-services",
         "kubernetesservices",
         "Kubernetes-Services",
-        "kubernetes services"
+        "kubernetes services",
+        "Azure Kubernetes Services"
       ]
     },
     {
@@ -8751,7 +8752,8 @@
         "virtual-networks-(classic)",
         "virtualnetworksclassic",
         "Virtual-Networks-(Classic)",
-        "virtual networks (classic)"
+        "virtual networks (classic)",
+        "azure virtual network"
       ]
     }
   ],
@@ -12206,6 +12208,7 @@
         "storageaccountsclassic",
         "Storage-Accounts-(Classic)",
         "storage accounts (classic)"
+        
       ]
     }
   ],
@@ -12217,7 +12220,8 @@
         "storage-accounts",
         "storageaccounts",
         "Storage-Accounts",
-        "storage accounts"
+        "storage accounts",
+        "Azure Blob Storage"
       ]
     }
   ],

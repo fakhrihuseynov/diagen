@@ -79,8 +79,15 @@ class App {
     onPageChange(pageName) {
         switch(pageName) {
             case 'export':
-                // Redraw canvas when navigating to export page
-                this.modules.editor.render();
+                // Redraw canvas and re-fit diagram when navigating to export page
+                // This ensures proper centering after canvas becomes visible
+                setTimeout(() => {
+                    if (this.modules.editor.nodes.length > 0) {
+                        this.modules.editor.fitDiagramToCanvas();
+                    } else {
+                        this.modules.editor.render();
+                    }
+                }, 50); // Small delay to ensure canvas is visible
                 break;
             case 'settings':
                 // Refresh connection status
