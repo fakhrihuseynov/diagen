@@ -467,6 +467,16 @@ body {
     color: var(--primary-color);
 }
 
+/* Diagram Name Display */
+.diagram-name {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    padding: 0.75rem 0;
+    margin-bottom: 1rem;
+}
+
 /* Canvas Container */
 .canvas-container {
     background: var(--background);
@@ -485,8 +495,8 @@ body {
     cursor: crosshair;
     background: #FAFAFA;
     background-image: 
-        linear-gradient(rgba(0, 0, 0, 0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
+        linear-gradient(rgba(0, 0, 0, 0.008) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 0, 0, 0.008) 1px, transparent 1px);
     background-size: 20px 20px;
 }
 
@@ -730,12 +740,52 @@ body {
 }
 
 /* Zoom Controls */
+/* Edit Controls */
+.edit-controls {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    z-index: 10;
+}
+
+.edit-btn {
+    padding: 0 16px;
+    height: 40px;
+    border: 1px solid var(--border);
+    background: var(--background);
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+}
+
+.edit-btn:hover {
+    background: var(--primary);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.edit-btn:active {
+    transform: translateY(0);
+}
+
 .zoom-controls {
     position: absolute;
-    bottom: 20px;
+    top: 20px;
     right: 20px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 8px;
     z-index: 10;
 }

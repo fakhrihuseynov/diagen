@@ -171,6 +171,10 @@ export class AIGenerator {
                 this.showProgress(90);
                 this.updateStatus('Building diagram layout...', 'processing');
                 
+                // Extract diagram name from markdown (first heading)
+                const diagramName = this.extractDiagramName(this.currentMarkdown);
+                result.diagram.name = diagramName;
+                
                 // Load diagram into editor
                 this.editor.loadDiagram(result.diagram);
                 
@@ -197,6 +201,23 @@ export class AIGenerator {
             window.showToast('Failed to generate diagram', 'error');
             this.hideProgress();
         }
+    }
+
+    extractDiagramName(markdown) {
+        if (!markdown) return 'Untitled Diagram';
+        
+        // Extract first # heading
+        const lines = markdown.split('\n');
+        for (const line of lines) {
+            const trimmed = line.trim();
+            if (trimmed.startsWith('# ')) {
+                return trimmed.substring(2).trim();
+            }
+        }
+        
+        // Fallback to first line if no heading found
+        const firstLine = lines[0]?.trim();
+        return firstLine || 'Untitled Diagram';
     }
 
     showProgress(percent) {
