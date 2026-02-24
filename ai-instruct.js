@@ -188,6 +188,13 @@ EVERY ICON PATH MUST MATCH AN "exactPath" FROM ICON-DATABASE.JSON
 MARKDOWN INPUT:
 ${markdown}
 
+LAYOUT REQUIREMENTS:
+- Space nodes at least 250-300 pixels apart horizontally
+- Space nodes at least 200-250 pixels apart vertically
+- Use wider spacing for better readability
+- Example positions: {"x": 200, "y": 200}, {"x": 500, "y": 200}, {"x": 800, "y": 200}
+- Avoid clustering nodes too close together
+
 OUTPUT JSON FORMAT:
 {
   "nodes": [
@@ -196,7 +203,7 @@ OUTPUT JSON FORMAT:
       "label": "Service Name",
       "icon": "EXACT_PATH_FROM_DATABASE",
       "type": "service",
-      "position": {"x": 100, "y": 100}
+      "position": {"x": 200, "y": 200}
     }
   ],
   "edges": [
