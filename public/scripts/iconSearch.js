@@ -144,17 +144,22 @@ export class IconSearchModal {
         
         // Add click handlers
         this.iconGrid.querySelectorAll('.icon-item').forEach(item => {
-            item.addEventListener('click', () => {
+            item.addEventListener('click', (e) => {
+                e.stopPropagation();
                 const iconPath = item.dataset.iconPath;
+                console.log('Icon item clicked:', iconPath);
                 this.selectIcon(iconPath);
             });
         });
     }
     
     selectIcon(iconPath) {
+        console.log('selectIcon called:', { iconPath, hasCallback: !!this.onIconSelected, hasNode: !!this.selectedNode });
         if (this.onIconSelected && this.selectedNode) {
             this.onIconSelected(this.selectedNode, iconPath);
             this.close();
+        } else {
+            console.warn('Cannot select icon: missing callback or node');
         }
     }
     

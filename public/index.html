@@ -193,8 +193,14 @@
                     <button class="btn btn-primary" id="export-png-btn">Export as PNG</button>
                 </div>
             </div>
+            <div id="diagram-name-display" class="diagram-name" style="display: none;">
+                Untitled Diagram
+            </div>
             <div class="canvas-container">
                 <canvas id="diagram-canvas" width="1600" height="1000"></canvas>
+                <div class="edit-controls">
+                    <button class="edit-btn" id="add-node-btn" title="Add New Node">+ Node</button>
+                </div>
                 <div class="zoom-controls">
                     <button class="zoom-btn" id="zoom-in-btn" title="Zoom In">+</button>
                     <button class="zoom-btn" id="zoom-out-btn" title="Zoom Out">−</button>
@@ -202,7 +208,7 @@
                 </div>
             </div>
             <div class="canvas-info">
-                <p>Click and drag elements to reposition • Double-click icons to change them • Use mouse wheel to zoom • Right-click elements for options</p>
+                <p>Click connector dots on nodes to create connections • Click "+ Node" to add new nodes • Double-click icons to change them • Drag nodes to reposition • Right-click or Space+drag to pan • Mouse wheel to zoom</p>
             </div>
         </section>
 

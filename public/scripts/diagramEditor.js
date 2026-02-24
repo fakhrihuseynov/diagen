@@ -37,6 +37,18 @@ export class DiagramEditor {
         this.lastClickedNode = null;
         this.doubleClickDelay = 300; // ms
         
+        // Connection dragging state
+        this.isDraggingConnection = false;
+        this.tempConnection = null; // {sourceNode, sourceConnector, toX, toY}
+        this.connectorRadius = 5;
+        this.connectorHitRadius = 10; // Larger hit area for easier clicking
+        
+        // Hover state for showing connector dots
+        this.hoveredNode = null;
+        
+        // Diagram metadata
+        this.diagramName = 'Untitled Diagram';
+        
         // Setup high-DPI canvas
         this.setupHighDPICanvas();
         this.setupEventListeners();
@@ -82,6 +94,9 @@ export class DiagramEditor {
         
         // Zoom control buttons
         this.setupZoomControls();
+        
+        // Edit control buttons
+        this.setupEditControls();
     }
 
     onKeyDown(e) {
@@ -111,6 +126,53 @@ export class DiagramEditor {
         if (zoomInBtn) zoomInBtn.addEventListener('click', () => this.zoomIn());
         if (zoomOutBtn) zoomOutBtn.addEventListener('click', () => this.zoomOut());
         if (zoomFitBtn) zoomFitBtn.addEventListener('click', () => this.fitDiagramToCanvas());
+    }
+
+    setupEditControls() {
+        const addNodeBtn = document.getElementById('add-node-btn');
+        
+        if (addNodeBtn) {
+            addNodeBtn.addEventListener('click', () => this.addNewNode());
+        }
+    }
+
+    addNewNode() {
+        // Generate unique ID
+        const nodeId = 'node-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+        
+        // Open icon search modal to select icon for new node
+        this.iconSearchModal.open({ id: nodeId, label: 'New Node', position: { x: 0, y: 0 } }, (selectedNode, iconPath) => {
+            // Prompt for node label
+            const label = prompt('Enter node label:', 'New Node');
+            if (!label) return;
+            
+            // Calculate center position in world coordinates
+            const rect = this.canvas.getBoundingClientRect();
+            const centerX = (rect.width / 2) / this.scale - this.panOffset.x;
+            const centerY = (rect.height / 2) / this.scale - this.panOffset.y;
+            
+            // Create new node
+            const newNode = {
+                id: nodeId,
+                label: label,
+                icon: iconPath,
+                position: {
+                    x: Math.round(centerX / this.gridSize) * this.gridSize,
+                    y: Math.round(centerY / this.gridSize) * this.gridSize
+                }
+            };
+            
+            // Add to nodes array
+            this.nodes.push(newNode);
+            
+            // Load icon and render
+            this.loadIcon(iconPath).then(() => {
+                this.render();
+                window.showToast(`Node "${label}" created`, 'success');
+            }).catch(() => {
+                window.showToast('Failed to load icon', 'error');
+            });
+        });
     }
 
     zoomIn() {
@@ -174,6 +236,20 @@ export class DiagramEditor {
         // Edge control points disabled per user request
         // Users don't want curved lines with control points
 
+        // Check if clicking on a connector dot first (higher priority than node)
+        const clickedConnector = this.getConnectorAt(x, y);
+        if (clickedConnector) {
+            this.isDraggingConnection = true;
+            this.tempConnection = {
+                sourceNode: clickedConnector.node,
+                sourceConnector: clickedConnector.connector,
+                toX: x,
+                toY: y
+            };
+            this.canvas.style.cursor = 'crosshair';
+            return;
+        }
+
         // Check if clicking on a node
         const clickedNode = this.getNodeAt(x, y);
         
@@ -208,17 +284,20 @@ export class DiagramEditor {
 
     openIconSearchModal(node) {
         this.iconSearchModal.open(node, (selectedNode, newIconPath) => {
+            console.log('Icon selection callback triggered:', { node: selectedNode.label, path: newIconPath });
+            
             // Replace the icon
             selectedNode.icon = newIconPath;
             
-            // Preload the new icon
-            this.preloadIcon(newIconPath);
-            
-            // Re-render
-            this.render();
-            
-            console.log(`Icon changed for "${selectedNode.label}" to ${newIconPath}`);
-            window.showToast(`Icon updated for "${selectedNode.label}"`, 'success');
+            // Preload the new icon and re-render
+            this.loadIcon(newIconPath).then(() => {
+                this.render();
+                console.log(`Icon changed for "${selectedNode.label}" to ${newIconPath}`);
+                window.showToast(`Icon updated for "${selectedNode.label}"`, 'success');
+            }).catch(() => {
+                console.error(`Failed to load icon: ${newIconPath}`);
+                window.showToast(`Failed to load icon`, 'error');
+            });
         });
     }
 
@@ -242,6 +321,29 @@ export class DiagramEditor {
         
         // Edge dragging disabled - users don't want curve control points
         
+        // Handle connection dragging (drawing temp line)
+        if (this.isDraggingConnection && this.tempConnection) {
+            const x = screenX / this.scale - this.panOffset.x;
+            const y = screenY / this.scale - this.panOffset.y;
+            
+            this.tempConnection.toX = x;
+            this.tempConnection.toY = y;
+            this.render();
+            return;
+        }
+        
+        // Update hovered node for connector dots
+        if (!this.isDragging && !this.isPanning && !this.isDraggingConnection) {
+            const x = screenX / this.scale - this.panOffset.x;
+            const y = screenY / this.scale - this.panOffset.y;
+            const hoveredNode = this.getNodeAt(x, y);
+            
+            if (hoveredNode !== this.hoveredNode) {
+                this.hoveredNode = hoveredNode;
+                this.render();
+            }
+        }
+        
         // Handle node dragging
         if (this.isDragging && this.selectedNode) {
             const x = screenX / this.scale - this.panOffset.x;
@@ -264,6 +366,33 @@ export class DiagramEditor {
     }
 
     onMouseUp(e) {
+        // Handle connection dragging completion
+        if (this.isDraggingConnection && this.tempConnection) {
+            const rect = this.canvas.getBoundingClientRect();
+            const screenX = e.clientX - rect.left;
+            const screenY = e.clientY - rect.top;
+            const x = screenX / this.scale - this.panOffset.x;
+            const y = screenY / this.scale - this.panOffset.y;
+            
+            const targetConnector = this.getConnectorAt(x, y);
+            
+            // Create edge if released over a different node's connector
+            if (targetConnector && targetConnector.node !== this.tempConnection.sourceNode) {
+                this.createEdge(
+                    this.tempConnection.sourceNode,
+                    this.tempConnection.sourceConnector,
+                    targetConnector.node,
+                    targetConnector.connector
+                );
+            }
+            
+            this.isDraggingConnection = false;
+            this.tempConnection = null;
+            this.canvas.style.cursor = 'default';
+            this.render();
+            return;
+        }
+        
         if (this.isPanning) {
             this.isPanning = false;
             this.canvas.style.cursor = this.spacePressed ? 'grab' : 'default';
@@ -335,6 +464,31 @@ export class DiagramEditor {
         return null;
     }
 
+    getConnectorAt(x, y) {
+        // Check all nodes for connector hits
+        for (const node of this.nodes) {
+            const size = 70;
+            const connectorOffset = size / 2;
+            const connectorPositions = [
+                { x: node.position.x, y: node.position.y - connectorOffset, direction: 'UP' },
+                { x: node.position.x, y: node.position.y + connectorOffset, direction: 'DOWN' },
+                { x: node.position.x - connectorOffset, y: node.position.y, direction: 'LEFT' },
+                { x: node.position.x + connectorOffset, y: node.position.y, direction: 'RIGHT' }
+            ];
+            
+            for (const connector of connectorPositions) {
+                const dx = x - connector.x;
+                const dy = y - connector.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (distance <= this.connectorHitRadius) {
+                    return { node, connector: connector.direction };
+                }
+            }
+        }
+        return null;
+    }
+
     showNodeContextMenu(node, x, y) {
         // Simple context menu for demonstration
         const remove = confirm(`Remove "${node.label}"?`);
@@ -355,6 +509,13 @@ export class DiagramEditor {
         this.nodes = diagram.nodes || [];
         this.edges = diagram.edges || [];
         
+        // Set diagram name if provided (check multiple possible locations)
+        if (diagram.name) {
+            this.setDiagramName(diagram.name);
+        } else if (diagram.metadata && diagram.metadata.title) {
+            this.setDiagramName(diagram.metadata.title);
+        }
+        
         // Load icons for nodes
         this.nodes.forEach(node => {
             if (node.icon) {
@@ -372,6 +533,21 @@ export class DiagramEditor {
         }, 200); // Increased delay for icon loading
         
         window.showToast('Diagram loaded successfully', 'success');
+    }
+
+    setDiagramName(name) {
+        this.diagramName = name || 'Untitled Diagram';
+        
+        // Update UI if diagram name element exists
+        const diagramNameElement = document.getElementById('diagram-name-display');
+        if (diagramNameElement) {
+            diagramNameElement.textContent = this.diagramName;
+            diagramNameElement.style.display = 'block';
+        }
+    }
+
+    getDiagramName() {
+        return this.diagramName;
     }
 
     fitDiagramToCanvas() {
@@ -491,6 +667,26 @@ export class DiagramEditor {
         this.render();
     }
 
+    createEdge(sourceNode, sourceConnector, targetNode, targetConnector) {
+        // Generate unique ID
+        const edgeId = 'edge-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+        
+        const newEdge = {
+            id: edgeId,
+            source: sourceNode.id,
+            target: targetNode.id,
+            sourceConnector: sourceConnector,
+            targetConnector: targetConnector,
+            label: '',
+            type: 'orthogonal'
+        };
+        
+        this.edges.push(newEdge);
+        this.render();
+        
+        window.showToast('Connection created', 'success');
+    }
+
     // Rendering
     render() {
         // Get CSS dimensions for clearing
@@ -517,7 +713,53 @@ export class DiagramEditor {
         // Draw nodes
         this.nodes.forEach(node => this.drawNode(node));
         
+        // Draw temporary connection line if dragging
+        if (this.isDraggingConnection && this.tempConnection) {
+            this.drawTempConnection();
+        }
+        
         this.ctx.restore();
+    }
+
+    drawTempConnection() {
+        const { sourceNode, sourceConnector, toX, toY } = this.tempConnection;
+        
+        // Calculate start position based on connector
+        const size = 70;
+        const offset = size / 2;
+        let startX = sourceNode.position.x;
+        let startY = sourceNode.position.y;
+        
+        switch (sourceConnector) {
+            case 'UP':
+                startY -= offset;
+                break;
+            case 'DOWN':
+                startY += offset;
+                break;
+            case 'LEFT':
+                startX -= offset;
+                break;
+            case 'RIGHT':
+                startX += offset;
+                break;
+        }
+        
+        // Draw dashed line
+        this.ctx.strokeStyle = '#4F46E5';
+        this.ctx.lineWidth = 2;
+        this.ctx.setLineDash([5, 5]);
+        this.ctx.beginPath();
+        this.ctx.moveTo(startX, startY);
+        this.ctx.lineTo(toX, toY);
+        this.ctx.stroke();
+        this.ctx.setLineDash([]);
+        
+        // Draw circle at cursor
+        this.ctx.beginPath();
+        this.ctx.arc(toX, toY, 5, 0, Math.PI * 2);
+        this.ctx.fillStyle = '#4F46E5';
+        this.ctx.fill();
     }
 
     drawGrid() {
@@ -680,6 +922,28 @@ export class DiagramEditor {
         this.ctx.fillRect(x - size / 2, y - size / 2, size, size);
         this.ctx.strokeRect(x - size / 2, y - size / 2, size, size);
         
+        // Draw connector dots (4 positions: UP, DOWN, LEFT, RIGHT) - ONLY on hover
+        if (this.hoveredNode === node || this.isDraggingConnection) {
+            const connectorRadius = 5;
+            const connectorOffset = size / 2;
+            const connectorPositions = [
+                { x: x, y: y - connectorOffset, direction: 'UP' },
+                { x: x, y: y + connectorOffset, direction: 'DOWN' },
+                { x: x - connectorOffset, y: y, direction: 'LEFT' },
+                { x: x + connectorOffset, y: y, direction: 'RIGHT' }
+            ];
+            
+            connectorPositions.forEach(pos => {
+                this.ctx.beginPath();
+                this.ctx.arc(pos.x, pos.y, connectorRadius, 0, Math.PI * 2);
+                this.ctx.fillStyle = '#4F46E5';
+                this.ctx.fill();
+                this.ctx.strokeStyle = '#FFFFFF';
+                this.ctx.lineWidth = 2;
+                this.ctx.stroke();
+            });
+        }
+        
         // Draw icon if available with maximum quality
         if (node.icon && this.iconCache.has(node.icon)) {
             const img = this.iconCache.get(node.icon);
@@ -741,8 +1005,48 @@ export class DiagramEditor {
         
         if (!sourceNode || !targetNode) return;
         
-        const start = sourceNode.position;
-        const end = targetNode.position;
+        // Calculate start and end positions based on connectors
+        const size = 70;
+        const offset = size / 2;
+        
+        let start = { ...sourceNode.position };
+        let end = { ...targetNode.position };
+        
+        // Adjust start position based on source connector
+        if (edge.sourceConnector) {
+            switch (edge.sourceConnector) {
+                case 'UP':
+                    start.y -= offset;
+                    break;
+                case 'DOWN':
+                    start.y += offset;
+                    break;
+                case 'LEFT':
+                    start.x -= offset;
+                    break;
+                case 'RIGHT':
+                    start.x += offset;
+                    break;
+            }
+        }
+        
+        // Adjust end position based on target connector
+        if (edge.targetConnector) {
+            switch (edge.targetConnector) {
+                case 'UP':
+                    end.y -= offset;
+                    break;
+                case 'DOWN':
+                    end.y += offset;
+                    break;
+                case 'LEFT':
+                    end.x -= offset;
+                    break;
+                case 'RIGHT':
+                    end.x += offset;
+                    break;
+            }
+        }
         
         // Clean, thin line styling
         const isSelected = this.selectedEdge === edge;
