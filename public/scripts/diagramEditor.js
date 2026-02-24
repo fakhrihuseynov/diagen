@@ -104,14 +104,8 @@ export class DiagramEditor {
         const x = screenX / this.scale - this.panOffset.x;
         const y = screenY / this.scale - this.panOffset.y;
 
-        // Check if clicking on edge control point
-        const clickedEdge = this.getEdgeAt(x, y);
-        if (clickedEdge) {
-            this.selectedEdge = clickedEdge;
-            this.isDraggingEdge = true;
-            e.preventDefault();
-            return;
-        }
+        // Edge control points disabled per user request
+        // Users don't want curved lines with control points
 
         // Check if clicking on a node
         const clickedNode = this.getNodeAt(x, y);
@@ -144,21 +138,7 @@ export class DiagramEditor {
             return;
         }
         
-        // Handle edge dragging
-        if (this.isDraggingEdge && this.selectedEdge) {
-            const x = screenX / this.scale - this.panOffset.x;
-            const y = screenY / this.scale - this.panOffset.y;
-            
-            // Update edge control point
-            if (!this.selectedEdge.controlPoint) {
-                this.selectedEdge.controlPoint = {};
-            }
-            this.selectedEdge.controlPoint.x = Math.round(x / this.gridSize) * this.gridSize;
-            this.selectedEdge.controlPoint.y = Math.round(y / this.gridSize) * this.gridSize;
-            
-            this.render();
-            return;
-        }
+        // Edge dragging disabled - users don't want curve control points
         
         // Handle node dragging
         if (this.isDragging && this.selectedNode) {
@@ -232,33 +212,8 @@ export class DiagramEditor {
     }
 
     getEdgeAt(x, y) {
-        // Check if clicking near an edge's control point or midpoint
-        for (let edge of this.edges) {
-            const sourceNode = this.nodes.find(n => n.id === edge.source);
-            const targetNode = this.nodes.find(n => n.id === edge.target);
-            
-            if (!sourceNode || !targetNode) continue;
-            
-            // Calculate midpoint
-            const midX = (sourceNode.position.x + targetNode.position.x) / 2;
-            const midY = (sourceNode.position.y + targetNode.position.y) / 2;
-            
-            // Check if control point exists and is clicked
-            if (edge.controlPoint) {
-                const dx = x - edge.controlPoint.x;
-                const dy = y - edge.controlPoint.y;
-                if (Math.sqrt(dx * dx + dy * dy) < 15) {
-                    return edge;
-                }
-            }
-            
-            // Check if clicking near midpoint (to create control point)
-            const dx = x - midX;
-            const dy = y - midY;
-            if (Math.sqrt(dx * dx + dy * dy) < 15) {
-                return edge;
-            }
-        }
+        // Edge control points disabled per user request
+        // Users prefer straight lines without curve manipulation
         return null;
     }
 
@@ -693,9 +648,8 @@ export class DiagramEditor {
         this.ctx.shadowOffsetX = 0;
         this.ctx.shadowOffsetY = 0;
         
-        if (edge.controlPoint) {
-            this.drawCurvedEdge(start, end, edge.controlPoint);
-        } else if (edge.type === 'orthogonal') {
+        // Always use straight or orthogonal paths (no curves)
+        if (edge.type === 'orthogonal') {
             this.drawOrthogonalEdge(start, end);
         } else {
             this.drawStraightEdge(start, end);
@@ -708,31 +662,14 @@ export class DiagramEditor {
         this.ctx.shadowOffsetY = 0;
         
         // Draw arrow at end
-        this.drawArrow(end, start, edge.controlPoint);
+        this.drawArrow(end, start, null);
         
-        // Draw control point if exists
-        if (edge.controlPoint) {
-            this.ctx.fillStyle = isSelected ? '#4F46E5' : '#64748B';
-            this.ctx.beginPath();
-            this.ctx.arc(edge.controlPoint.x, edge.controlPoint.y, 6, 0, Math.PI * 2);
-            this.ctx.fill();
-            this.ctx.strokeStyle = '#FFFFFF';
-            this.ctx.lineWidth = 2;
-            this.ctx.stroke();
-        } else {
-            // Draw midpoint indicator
-            const midX = (start.x + end.x) / 2;
-            const midY = (start.y + end.y) / 2;
-            this.ctx.fillStyle = '#94A3B8';
-            this.ctx.beginPath();
-            this.ctx.arc(midX, midY, 3, 0, Math.PI * 2);
-            this.ctx.fill();
-        }
+        // No control points - users prefer straight lines
         
         // Draw label if exists (skip "connection" labels)
         if (edge.label && edge.label.toLowerCase() !== 'connection') {
-            const midX = edge.controlPoint ? edge.controlPoint.x : (start.x + end.x) / 2;
-            const midY = edge.controlPoint ? edge.controlPoint.y - 15 : (start.y + end.y) / 2;
+            const midX = (start.x + end.x) / 2;
+            const midY = (start.y + end.y) / 2;
             
             this.ctx.fillStyle = '#FFFFFF';
             this.ctx.strokeStyle = '#E2E8F0';
