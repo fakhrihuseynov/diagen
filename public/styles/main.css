@@ -275,7 +275,9 @@ body {
 }
 
 .example-icon {
-    font-size: 1.5rem;
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
 }
 
 /* Generator Page - New Horizontal Layout */
