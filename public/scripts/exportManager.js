@@ -19,24 +19,38 @@ export class ExportManager {
         clearCanvasBtn.addEventListener('click', () => this.clearCanvas());
     }
 
-    exportToPNG() {
+    async exportToPNG() {
         try {
-            const dataURL = this.editor.toDataURL();
+            // Show loading message
+            window.showToast('Generating high-quality PNG...', 'info');
+
+            // Use high-quality export method
+            const dataURL = await this.editor.exportToPNG({
+                scale: 2,           // 2x resolution for retina quality
+                padding: 100,       // 100px padding around diagram
+                backgroundColor: '#FFFFFF'  // White background
+            });
             
             // Create download link
             const link = document.createElement('a');
             const timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
-            link.download = `diagram-${timestamp}.png`;
+            const diagramName = this.editor.getDiagramName() || 'diagram';
+            const safeName = diagramName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+            link.download = `${safeName}-${timestamp}.png`;
             link.href = dataURL;
             
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
             
-            window.showToast('Diagram exported as PNG', 'success');
+            window.showToast('High-quality PNG exported successfully!', 'success');
         } catch (error) {
             console.error('PNG export error:', error);
-            window.showToast('Failed to export PNG', 'error');
+            if (error.message === 'No nodes to export') {
+                window.showToast('Canvas is empty, nothing to export', 'warning');
+            } else {
+                window.showToast('Failed to export PNG: ' + error.message, 'error');
+            }
         }
     }
 

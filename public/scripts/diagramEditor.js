@@ -18,6 +18,7 @@ export class DiagramEditor {
         
         this.gridSize = 20;
         this.iconCache = new Map();
+        this.diagramName = 'diagram';
         
         this.setupEventListeners();
     }
@@ -154,6 +155,14 @@ export class DiagramEditor {
                 version: '1.0'
             }
         };
+    }
+
+    getDiagramName() {
+        return this.diagramName || 'diagram';
+    }
+
+    setDiagramName(name) {
+        this.diagramName = name || 'diagram';
     }
 
     addNode(node) {
@@ -396,5 +405,200 @@ export class DiagramEditor {
     // Export as data URL for PNG export
     toDataURL() {
         return this.canvas.toDataURL('image/png');
+    }
+
+    // High-quality PNG export with proper rendering
+    async exportToPNG(options = {}) {
+        const {
+            scale = 2, // 2x for retina quality
+            padding = 100, // Padding around diagram
+            backgroundColor = '#FFFFFF'
+        } = options;
+
+        // Calculate diagram bounds
+        if (this.nodes.length === 0) {
+            throw new Error('No nodes to export');
+        }
+
+        const nodeSize = 60;
+        let minX = Infinity, minY = Infinity;
+        let maxX = -Infinity, maxY = -Infinity;
+
+        // Find bounding box of all nodes
+        this.nodes.forEach(node => {
+            const x = node.position.x;
+            const y = node.position.y;
+            minX = Math.min(minX, x - nodeSize);
+            minY = Math.min(minY, y - nodeSize);
+            maxX = Math.max(maxX, x + nodeSize);
+            maxY = Math.max(maxY, y + nodeSize);
+        });
+
+        // Add padding
+        const width = (maxX - minX) + padding * 2;
+        const height = (maxY - minY) + padding * 2;
+
+        // Create temporary high-resolution canvas
+        const exportCanvas = document.createElement('canvas');
+        exportCanvas.width = width * scale;
+        exportCanvas.height = height * scale;
+        const exportCtx = exportCanvas.getContext('2d');
+
+        // Enable high-quality rendering
+        exportCtx.imageSmoothingEnabled = true;
+        exportCtx.imageSmoothingQuality = 'high';
+
+        // Scale for high resolution
+        exportCtx.scale(scale, scale);
+
+        // Draw background
+        exportCtx.fillStyle = backgroundColor;
+        exportCtx.fillRect(0, 0, width, height);
+
+        // Calculate offset to center diagram
+        const offsetX = -minX + padding;
+        const offsetY = -minY + padding;
+
+        // Draw all edges (connection lines)
+        exportCtx.save();
+        exportCtx.translate(offsetX, offsetY);
+        
+        this.edges.forEach(edge => {
+            const sourceNode = this.nodes.find(n => n.id === edge.source);
+            const targetNode = this.nodes.find(n => n.id === edge.target);
+            
+            if (!sourceNode || !targetNode) return;
+
+            const sourcePos = this.getConnectorPosition(sourceNode, edge.sourceConnector);
+            const targetPos = this.getConnectorPosition(targetNode, edge.targetConnector);
+
+            // Draw edge line
+            exportCtx.strokeStyle = '#64748B';
+            exportCtx.lineWidth = 2;
+            exportCtx.setLineDash([]);
+            exportCtx.beginPath();
+            exportCtx.moveTo(sourcePos.x, sourcePos.y);
+            exportCtx.lineTo(targetPos.x, targetPos.y);
+            exportCtx.stroke();
+
+            // Draw arrow at target
+            const angle = Math.atan2(targetPos.y - sourcePos.y, targetPos.x - sourcePos.x);
+            const arrowLength = 10;
+            const arrowWidth = 6;
+
+            exportCtx.save();
+            exportCtx.translate(targetPos.x, targetPos.y);
+            exportCtx.rotate(angle);
+            
+            exportCtx.fillStyle = '#64748B';
+            exportCtx.beginPath();
+            exportCtx.moveTo(0, 0);
+            exportCtx.lineTo(-arrowLength, -arrowWidth);
+            exportCtx.lineTo(-arrowLength, arrowWidth);
+            exportCtx.closePath();
+            exportCtx.fill();
+            
+            exportCtx.restore();
+
+            // Draw edge label if exists
+            if (edge.label) {
+                const midX = (sourcePos.x + targetPos.x) / 2;
+                const midY = (sourcePos.y + targetPos.y) / 2;
+                
+                exportCtx.fillStyle = '#FFFFFF';
+                exportCtx.strokeStyle = '#CBD5E1';
+                exportCtx.lineWidth = 1;
+                exportCtx.fillRect(midX - 30, midY - 10, 60, 20);
+                exportCtx.strokeRect(midX - 30, midY - 10, 60, 20);
+                
+                exportCtx.fillStyle = '#475569';
+                exportCtx.font = '11px -apple-system, sans-serif';
+                exportCtx.textAlign = 'center';
+                exportCtx.textBaseline = 'middle';
+                exportCtx.fillText(edge.label, midX, midY);
+            }
+        });
+
+        // Draw all nodes
+        for (const node of this.nodes) {
+            const x = node.position.x;
+            const y = node.position.y;
+            
+            // Draw node background
+            exportCtx.fillStyle = '#FFFFFF';
+            exportCtx.strokeStyle = '#E2E8F0';
+            exportCtx.lineWidth = 2;
+            
+            exportCtx.fillRect(x - nodeSize / 2, y - nodeSize / 2, nodeSize, nodeSize);
+            exportCtx.strokeRect(x - nodeSize / 2, y - nodeSize / 2, nodeSize, nodeSize);
+            
+            // Draw icon with high quality
+            if (node.icon && this.iconCache.has(node.icon)) {
+                const img = this.iconCache.get(node.icon);
+                if (img.complete) {
+                    // Draw at higher resolution for quality
+                    exportCtx.drawImage(img, x - 24, y - 24, 48, 48);
+                }
+            } else {
+                // Draw placeholder
+                exportCtx.fillStyle = '#9CA3AF';
+                exportCtx.font = '14px sans-serif';
+                exportCtx.textAlign = 'center';
+                exportCtx.textBaseline = 'middle';
+                exportCtx.fillText('?', x, y);
+            }
+            
+            // Draw label
+            exportCtx.fillStyle = '#1E293B';
+            exportCtx.font = '12px -apple-system, sans-serif';
+            exportCtx.textAlign = 'center';
+            exportCtx.textBaseline = 'top';
+            
+            const label = node.label || 'Node';
+            const maxWidth = 100;
+            const words = label.split(' ');
+            let line = '';
+            let lineY = y + nodeSize / 2 + 8;
+            
+            words.forEach((word, i) => {
+                const testLine = line + word + ' ';
+                const metrics = exportCtx.measureText(testLine);
+                
+                if (metrics.width > maxWidth && i > 0) {
+                    exportCtx.fillText(line.trim(), x, lineY);
+                    line = word + ' ';
+                    lineY += 14;
+                } else {
+                    line = testLine;
+                }
+            });
+            exportCtx.fillText(line.trim(), x, lineY);
+        }
+
+        exportCtx.restore();
+
+        // Return high-quality PNG data URL
+        return exportCanvas.toDataURL('image/png', 1.0);
+    }
+
+    // Helper to get connector position on a node
+    getConnectorPosition(node, connector) {
+        const size = 60;
+        const offset = size / 2;
+        const x = node.position.x;
+        const y = node.position.y;
+
+        switch (connector) {
+            case 'UP':
+                return { x: x, y: y - offset };
+            case 'DOWN':
+                return { x: x, y: y + offset };
+            case 'LEFT':
+                return { x: x - offset, y: y };
+            case 'RIGHT':
+                return { x: x + offset, y: y };
+            default:
+                return { x: x, y: y };
+        }
     }
 }
