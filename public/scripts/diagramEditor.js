@@ -27,6 +27,7 @@ export class DiagramEditor {
         
         this.gridSize = 20;
         this.iconCache = new Map();
+        this.diagramName = 'diagram';
         
         // Icon search modal
         this.iconSearchModal = new IconSearchModal();
@@ -618,6 +619,14 @@ export class DiagramEditor {
         };
     }
 
+    getDiagramName() {
+        return this.diagramName || 'diagram';
+    }
+
+    setDiagramName(name) {
+        this.diagramName = name || 'diagram';
+    }
+
     addNode(node) {
         if (!node.id) {
             node.id = 'node-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
@@ -1180,5 +1189,278 @@ export class DiagramEditor {
     // Export as data URL for PNG export
     toDataURL() {
         return this.canvas.toDataURL('image/png');
+    }
+
+    // High-quality PNG export with proper rendering
+    async exportToPNG(options = {}) {
+        const {
+            scale = 2, // 2x for retina quality
+            padding = 100, // Padding around diagram
+            backgroundColor = '#FFFFFF'
+        } = options;
+
+        // Calculate diagram bounds
+        if (this.nodes.length === 0) {
+            throw new Error('No nodes to export');
+        }
+
+        const nodeSize = 70; // Match actual node size
+        let minX = Infinity, minY = Infinity;
+        let maxX = -Infinity, maxY = -Infinity;
+
+        // Find bounding box of all nodes (including potential frames)
+        this.nodes.forEach(node => {
+            const x = node.position.x;
+            const y = node.position.y;
+            minX = Math.min(minX, x - nodeSize - 50); // Extra space for frames
+            minY = Math.min(minY, y - nodeSize - 50);
+            maxX = Math.max(maxX, x + nodeSize + 50);
+            maxY = Math.max(maxY, y + nodeSize + 50);
+        });
+
+        // Add padding
+        const width = (maxX - minX) + padding * 2;
+        const height = (maxY - minY) + padding * 2;
+
+        // Create temporary high-resolution canvas
+        const exportCanvas = document.createElement('canvas');
+        exportCanvas.width = width * scale;
+        exportCanvas.height = height * scale;
+        const exportCtx = exportCanvas.getContext('2d');
+
+        // Enable high-quality rendering
+        exportCtx.imageSmoothingEnabled = true;
+        exportCtx.imageSmoothingQuality = 'high';
+
+        // Scale for high resolution
+        exportCtx.scale(scale, scale);
+
+        // Draw background
+        exportCtx.fillStyle = backgroundColor;
+        exportCtx.fillRect(0, 0, width, height);
+
+        // Calculate offset to center diagram
+        const offsetX = -minX + padding;
+        const offsetY = -minY + padding;
+
+        exportCtx.save();
+        exportCtx.translate(offsetX, offsetY);
+
+        // STEP 1: Draw stack frames/groups (like actual render)
+        const stacks = this.detectStacks();
+        stacks.forEach(stack => {
+            const { name, nodes, color } = stack;
+            
+            if (nodes.length < 2) return; // Skip single-node stacks
+            
+            // Calculate bounding box with padding
+            let frameMinX = Infinity, frameMinY = Infinity, frameMaxX = -Infinity, frameMaxY = -Infinity;
+            nodes.forEach(node => {
+                const size = 70;
+                frameMinX = Math.min(frameMinX, node.position.x - size / 2);
+                frameMinY = Math.min(frameMinY, node.position.y - size / 2);
+                frameMaxX = Math.max(frameMaxX, node.position.x + size / 2);
+                frameMaxY = Math.max(frameMaxY, node.position.y + size / 2);
+            });
+            
+            const framePadding = 40;
+            frameMinX -= framePadding;
+            frameMinY -= framePadding;
+            frameMaxX += framePadding;
+            frameMaxY += framePadding;
+            
+            // Draw rounded rectangle frame
+            const radius = 10;
+            
+            // Background with transparency
+            exportCtx.fillStyle = color + '15'; // ~8% opacity
+            exportCtx.strokeStyle = color;
+            exportCtx.lineWidth = 2;
+            exportCtx.setLineDash([8, 4]); // Dashed border
+            
+            // Rounded rectangle path
+            exportCtx.beginPath();
+            exportCtx.moveTo(frameMinX + radius, frameMinY);
+            exportCtx.lineTo(frameMaxX - radius, frameMinY);
+            exportCtx.arcTo(frameMaxX, frameMinY, frameMaxX, frameMinY + radius, radius);
+            exportCtx.lineTo(frameMaxX, frameMaxY - radius);
+            exportCtx.arcTo(frameMaxX, frameMaxY, frameMaxX - radius, frameMaxY, radius);
+            exportCtx.lineTo(frameMinX + radius, frameMaxY);
+            exportCtx.arcTo(frameMinX, frameMaxY, frameMinX, frameMaxY - radius, radius);
+            exportCtx.lineTo(frameMinX, frameMinY + radius);
+            exportCtx.arcTo(frameMinX, frameMinY, frameMinX + radius, frameMinY, radius);
+            exportCtx.closePath();
+            
+            exportCtx.fill();
+            exportCtx.stroke();
+            exportCtx.setLineDash([]); // Reset dash
+            
+            // Draw label
+            exportCtx.fillStyle = color;
+            exportCtx.font = 'bold 14px sans-serif';
+            exportCtx.textAlign = 'left';
+            exportCtx.textBaseline = 'bottom';
+            exportCtx.fillText(name, frameMinX + 15, frameMinY - 10);
+        });
+
+        // STEP 2: Draw edges with proper routing (like actual render)
+        this.edges.forEach(edge => {
+            const sourceNode = this.nodes.find(n => n.id === edge.source);
+            const targetNode = this.nodes.find(n => n.id === edge.target);
+            
+            if (!sourceNode || !targetNode) return;
+
+            // Get connector positions
+            const sourcePos = this.getConnectorPosition(sourceNode, edge.sourceConnector);
+            const targetPos = this.getConnectorPosition(targetNode, edge.targetConnector);
+
+            // Draw edge line with proper style
+            exportCtx.strokeStyle = '#475569';
+            exportCtx.lineWidth = 1.5;
+            exportCtx.setLineDash([]);
+            exportCtx.lineCap = 'butt';
+            exportCtx.lineJoin = 'miter';
+
+            // Use orthogonal or straight routing based on edge type
+            exportCtx.beginPath();
+            exportCtx.moveTo(sourcePos.x, sourcePos.y);
+            
+            if (edge.type === 'orthogonal') {
+                // Orthogonal routing (L or Z shape)
+                const midX = (sourcePos.x + targetPos.x) / 2;
+                if (Math.abs(sourcePos.y - targetPos.y) < 50) {
+                    exportCtx.lineTo(midX, sourcePos.y);
+                    exportCtx.lineTo(midX, targetPos.y);
+                } else {
+                    exportCtx.lineTo(midX, sourcePos.y);
+                    exportCtx.lineTo(midX, targetPos.y);
+                }
+                exportCtx.lineTo(targetPos.x, targetPos.y);
+            } else {
+                // Straight line
+                exportCtx.lineTo(targetPos.x, targetPos.y);
+            }
+            exportCtx.stroke();
+
+            // Draw arrow at target
+            const angle = Math.atan2(targetPos.y - sourcePos.y, targetPos.x - sourcePos.x);
+            const arrowLength = 10;
+            const arrowWidth = 6;
+
+            exportCtx.save();
+            exportCtx.translate(targetPos.x, targetPos.y);
+            exportCtx.rotate(angle);
+            
+            exportCtx.fillStyle = '#475569';
+            exportCtx.beginPath();
+            exportCtx.moveTo(0, 0);
+            exportCtx.lineTo(-arrowLength, -arrowWidth);
+            exportCtx.lineTo(-arrowLength, arrowWidth);
+            exportCtx.closePath();
+            exportCtx.fill();
+            
+            exportCtx.restore();
+
+            // Draw edge label ONLY if exists AND not "connection" (like actual render)
+            if (edge.label && edge.label.toLowerCase() !== 'connection') {
+                const midX = (sourcePos.x + targetPos.x) / 2;
+                const midY = (sourcePos.y + targetPos.y) / 2;
+                
+                exportCtx.fillStyle = '#FFFFFF';
+                exportCtx.strokeStyle = '#E2E8F0';
+                exportCtx.lineWidth = 1;
+                const textPadding = 8;
+                const textWidth = exportCtx.measureText(edge.label).width;
+                exportCtx.fillRect(midX - textWidth/2 - textPadding, midY - 12, textWidth + textPadding*2, 20);
+                exportCtx.strokeRect(midX - textWidth/2 - textPadding, midY - 12, textWidth + textPadding*2, 20);
+                
+                exportCtx.fillStyle = '#475569';
+                exportCtx.font = '12px sans-serif';
+                exportCtx.textAlign = 'center';
+                exportCtx.textBaseline = 'middle';
+                exportCtx.fillText(edge.label, midX, midY + 2);
+            }
+        });
+
+        // STEP 3: Draw nodes (like actual render)
+        for (const node of this.nodes) {
+            const x = node.position.x;
+            const y = node.position.y;
+            
+            // Draw node background
+            exportCtx.fillStyle = '#FFFFFF';
+            exportCtx.strokeStyle = '#E2E8F0';
+            exportCtx.lineWidth = 2;
+            
+            exportCtx.fillRect(x - nodeSize / 2, y - nodeSize / 2, nodeSize, nodeSize);
+            exportCtx.strokeRect(x - nodeSize / 2, y - nodeSize / 2, nodeSize, nodeSize);
+            
+            // Draw icon with high quality
+            if (node.icon && this.iconCache.has(node.icon)) {
+                const img = this.iconCache.get(node.icon);
+                if (img.complete) {
+                    exportCtx.drawImage(img, x - 30, y - 30, 60, 60);
+                }
+            } else {
+                // Draw placeholder
+                exportCtx.fillStyle = '#9CA3AF';
+                exportCtx.font = '14px sans-serif';
+                exportCtx.textAlign = 'center';
+                exportCtx.textBaseline = 'middle';
+                exportCtx.fillText('?', x, y);
+            }
+            
+            // Draw label
+            exportCtx.fillStyle = '#1E293B';
+            exportCtx.font = '13px -apple-system, sans-serif';
+            exportCtx.textAlign = 'center';
+            exportCtx.textBaseline = 'top';
+            
+            const label = node.label || 'Node';
+            const maxWidth = 120;
+            const words = label.split(' ');
+            let line = '';
+            let lineY = y + nodeSize / 2 + 10;
+            
+            words.forEach((word, i) => {
+                const testLine = line + word + ' ';
+                const metrics = exportCtx.measureText(testLine);
+                
+                if (metrics.width > maxWidth && i > 0) {
+                    exportCtx.fillText(line.trim(), x, lineY);
+                    line = word + ' ';
+                    lineY += 16;
+                } else {
+                    line = testLine;
+                }
+            });
+            exportCtx.fillText(line.trim(), x, lineY);
+        }
+
+        exportCtx.restore();
+
+        // Return high-quality PNG data URL
+        return exportCanvas.toDataURL('image/png', 1.0);
+    }
+
+    // Helper to get connector position on a node
+    getConnectorPosition(node, connector) {
+        const size = 70; // Match actual node size
+        const offset = size / 2;
+        const x = node.position.x;
+        const y = node.position.y;
+
+        switch (connector) {
+            case 'UP':
+                return { x: x, y: y - offset };
+            case 'DOWN':
+                return { x: x, y: y + offset };
+            case 'LEFT':
+                return { x: x - offset, y: y };
+            case 'RIGHT':
+                return { x: x + offset, y: y };
+            default:
+                return { x: x, y: y };
+        }
     }
 }
