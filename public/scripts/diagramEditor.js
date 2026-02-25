@@ -1204,18 +1204,18 @@ export class DiagramEditor {
             throw new Error('No nodes to export');
         }
 
-        const nodeSize = 60;
+        const nodeSize = 70; // Match actual node size
         let minX = Infinity, minY = Infinity;
         let maxX = -Infinity, maxY = -Infinity;
 
-        // Find bounding box of all nodes
+        // Find bounding box of all nodes (including potential frames)
         this.nodes.forEach(node => {
             const x = node.position.x;
             const y = node.position.y;
-            minX = Math.min(minX, x - nodeSize);
-            minY = Math.min(minY, y - nodeSize);
-            maxX = Math.max(maxX, x + nodeSize);
-            maxY = Math.max(maxY, y + nodeSize);
+            minX = Math.min(minX, x - nodeSize - 50); // Extra space for frames
+            minY = Math.min(minY, y - nodeSize - 50);
+            maxX = Math.max(maxX, x + nodeSize + 50);
+            maxY = Math.max(maxY, y + nodeSize + 50);
         });
 
         // Add padding
@@ -1243,26 +1243,103 @@ export class DiagramEditor {
         const offsetX = -minX + padding;
         const offsetY = -minY + padding;
 
-        // Draw all edges (connection lines)
         exportCtx.save();
         exportCtx.translate(offsetX, offsetY);
-        
+
+        // STEP 1: Draw stack frames/groups (like actual render)
+        const stacks = this.detectStacks();
+        stacks.forEach(stack => {
+            const { name, nodes, color } = stack;
+            
+            if (nodes.length < 2) return; // Skip single-node stacks
+            
+            // Calculate bounding box with padding
+            let frameMinX = Infinity, frameMinY = Infinity, frameMaxX = -Infinity, frameMaxY = -Infinity;
+            nodes.forEach(node => {
+                const size = 70;
+                frameMinX = Math.min(frameMinX, node.position.x - size / 2);
+                frameMinY = Math.min(frameMinY, node.position.y - size / 2);
+                frameMaxX = Math.max(frameMaxX, node.position.x + size / 2);
+                frameMaxY = Math.max(frameMaxY, node.position.y + size / 2);
+            });
+            
+            const framePadding = 40;
+            frameMinX -= framePadding;
+            frameMinY -= framePadding;
+            frameMaxX += framePadding;
+            frameMaxY += framePadding;
+            
+            // Draw rounded rectangle frame
+            const radius = 10;
+            
+            // Background with transparency
+            exportCtx.fillStyle = color + '15'; // ~8% opacity
+            exportCtx.strokeStyle = color;
+            exportCtx.lineWidth = 2;
+            exportCtx.setLineDash([8, 4]); // Dashed border
+            
+            // Rounded rectangle path
+            exportCtx.beginPath();
+            exportCtx.moveTo(frameMinX + radius, frameMinY);
+            exportCtx.lineTo(frameMaxX - radius, frameMinY);
+            exportCtx.arcTo(frameMaxX, frameMinY, frameMaxX, frameMinY + radius, radius);
+            exportCtx.lineTo(frameMaxX, frameMaxY - radius);
+            exportCtx.arcTo(frameMaxX, frameMaxY, frameMaxX - radius, frameMaxY, radius);
+            exportCtx.lineTo(frameMinX + radius, frameMaxY);
+            exportCtx.arcTo(frameMinX, frameMaxY, frameMinX, frameMaxY - radius, radius);
+            exportCtx.lineTo(frameMinX, frameMinY + radius);
+            exportCtx.arcTo(frameMinX, frameMinY, frameMinX + radius, frameMinY, radius);
+            exportCtx.closePath();
+            
+            exportCtx.fill();
+            exportCtx.stroke();
+            exportCtx.setLineDash([]); // Reset dash
+            
+            // Draw label
+            exportCtx.fillStyle = color;
+            exportCtx.font = 'bold 14px sans-serif';
+            exportCtx.textAlign = 'left';
+            exportCtx.textBaseline = 'bottom';
+            exportCtx.fillText(name, frameMinX + 15, frameMinY - 10);
+        });
+
+        // STEP 2: Draw edges with proper routing (like actual render)
         this.edges.forEach(edge => {
             const sourceNode = this.nodes.find(n => n.id === edge.source);
             const targetNode = this.nodes.find(n => n.id === edge.target);
             
             if (!sourceNode || !targetNode) return;
 
+            // Get connector positions
             const sourcePos = this.getConnectorPosition(sourceNode, edge.sourceConnector);
             const targetPos = this.getConnectorPosition(targetNode, edge.targetConnector);
 
-            // Draw edge line
-            exportCtx.strokeStyle = '#64748B';
-            exportCtx.lineWidth = 2;
+            // Draw edge line with proper style
+            exportCtx.strokeStyle = '#475569';
+            exportCtx.lineWidth = 1.5;
             exportCtx.setLineDash([]);
+            exportCtx.lineCap = 'butt';
+            exportCtx.lineJoin = 'miter';
+
+            // Use orthogonal or straight routing based on edge type
             exportCtx.beginPath();
             exportCtx.moveTo(sourcePos.x, sourcePos.y);
-            exportCtx.lineTo(targetPos.x, targetPos.y);
+            
+            if (edge.type === 'orthogonal') {
+                // Orthogonal routing (L or Z shape)
+                const midX = (sourcePos.x + targetPos.x) / 2;
+                if (Math.abs(sourcePos.y - targetPos.y) < 50) {
+                    exportCtx.lineTo(midX, sourcePos.y);
+                    exportCtx.lineTo(midX, targetPos.y);
+                } else {
+                    exportCtx.lineTo(midX, sourcePos.y);
+                    exportCtx.lineTo(midX, targetPos.y);
+                }
+                exportCtx.lineTo(targetPos.x, targetPos.y);
+            } else {
+                // Straight line
+                exportCtx.lineTo(targetPos.x, targetPos.y);
+            }
             exportCtx.stroke();
 
             // Draw arrow at target
@@ -1274,7 +1351,7 @@ export class DiagramEditor {
             exportCtx.translate(targetPos.x, targetPos.y);
             exportCtx.rotate(angle);
             
-            exportCtx.fillStyle = '#64748B';
+            exportCtx.fillStyle = '#475569';
             exportCtx.beginPath();
             exportCtx.moveTo(0, 0);
             exportCtx.lineTo(-arrowLength, -arrowWidth);
@@ -1284,26 +1361,28 @@ export class DiagramEditor {
             
             exportCtx.restore();
 
-            // Draw edge label if exists
-            if (edge.label) {
+            // Draw edge label ONLY if exists AND not "connection" (like actual render)
+            if (edge.label && edge.label.toLowerCase() !== 'connection') {
                 const midX = (sourcePos.x + targetPos.x) / 2;
                 const midY = (sourcePos.y + targetPos.y) / 2;
                 
                 exportCtx.fillStyle = '#FFFFFF';
-                exportCtx.strokeStyle = '#CBD5E1';
+                exportCtx.strokeStyle = '#E2E8F0';
                 exportCtx.lineWidth = 1;
-                exportCtx.fillRect(midX - 30, midY - 10, 60, 20);
-                exportCtx.strokeRect(midX - 30, midY - 10, 60, 20);
+                const textPadding = 8;
+                const textWidth = exportCtx.measureText(edge.label).width;
+                exportCtx.fillRect(midX - textWidth/2 - textPadding, midY - 12, textWidth + textPadding*2, 20);
+                exportCtx.strokeRect(midX - textWidth/2 - textPadding, midY - 12, textWidth + textPadding*2, 20);
                 
                 exportCtx.fillStyle = '#475569';
-                exportCtx.font = '11px -apple-system, sans-serif';
+                exportCtx.font = '12px sans-serif';
                 exportCtx.textAlign = 'center';
                 exportCtx.textBaseline = 'middle';
-                exportCtx.fillText(edge.label, midX, midY);
+                exportCtx.fillText(edge.label, midX, midY + 2);
             }
         });
 
-        // Draw all nodes
+        // STEP 3: Draw nodes (like actual render)
         for (const node of this.nodes) {
             const x = node.position.x;
             const y = node.position.y;
@@ -1320,8 +1399,7 @@ export class DiagramEditor {
             if (node.icon && this.iconCache.has(node.icon)) {
                 const img = this.iconCache.get(node.icon);
                 if (img.complete) {
-                    // Draw at higher resolution for quality
-                    exportCtx.drawImage(img, x - 24, y - 24, 48, 48);
+                    exportCtx.drawImage(img, x - 30, y - 30, 60, 60);
                 }
             } else {
                 // Draw placeholder
@@ -1334,15 +1412,15 @@ export class DiagramEditor {
             
             // Draw label
             exportCtx.fillStyle = '#1E293B';
-            exportCtx.font = '12px -apple-system, sans-serif';
+            exportCtx.font = '13px -apple-system, sans-serif';
             exportCtx.textAlign = 'center';
             exportCtx.textBaseline = 'top';
             
             const label = node.label || 'Node';
-            const maxWidth = 100;
+            const maxWidth = 120;
             const words = label.split(' ');
             let line = '';
-            let lineY = y + nodeSize / 2 + 8;
+            let lineY = y + nodeSize / 2 + 10;
             
             words.forEach((word, i) => {
                 const testLine = line + word + ' ';
@@ -1351,7 +1429,7 @@ export class DiagramEditor {
                 if (metrics.width > maxWidth && i > 0) {
                     exportCtx.fillText(line.trim(), x, lineY);
                     line = word + ' ';
-                    lineY += 14;
+                    lineY += 16;
                 } else {
                     line = testLine;
                 }
@@ -1367,7 +1445,7 @@ export class DiagramEditor {
 
     // Helper to get connector position on a node
     getConnectorPosition(node, connector) {
-        const size = 60;
+        const size = 70; // Match actual node size
         const offset = size / 2;
         const x = node.position.x;
         const y = node.position.y;
